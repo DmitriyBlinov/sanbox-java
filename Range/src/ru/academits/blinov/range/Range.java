@@ -34,4 +34,15 @@ public class Range {
 
     }
 
+    public void checkCrossingRange (double from1, double to1, double from2, double to2) {
+       if ((from1 >= from2 && from1 <= to2) && (to1 >= from2 && to1 <=to2)) {
+           from = from1;
+           to = to1;
+       }
+        if (from1 >= from2 && from1 <= to2) {
+            from = from1;
+            to = to1;
+        }
+    }
+
 }
