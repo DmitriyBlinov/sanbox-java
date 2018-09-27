@@ -34,15 +34,33 @@ public class Range {
 
     }
 
-    public void checkCrossingRange (double from1, double to1, double from2, double to2) {
-       if ((from1 >= from2 && from1 <= to2) && (to1 >= from2 && to1 <=to2)) {
-           from = from1;
-           to = to1;
-       }
-        if (from1 >= from2 && from1 <= to2) {
-            from = from1;
-            to = to1;
+    public void checkRangeCrossing(double from, double to) {
+        Range range = new Range(from, to);
+        if ((from > this.to) || (to < this.from)) {
+            range = null;
+        } else {
+            if (from >= this.from && from <= this.to) {
+                if (to <= this.to) {
+                    range.setFrom(from);
+                    range.setTo(to);
+                } else if (to > this.to) {
+                    range.setFrom(from);
+                    range.setTo(this.to);
+                }
+            } else {
+                if (to <= this.to) {
+                    range.setFrom(this.from);
+                    range.setTo(to);
+                } else if (to > this.to) {
+                    range.setFrom(this.from);
+                    range.setTo(this.to);
+                }
+            }
+        }
+        if (range == null) {
+            System.out.println("Интервалы не пересекаются");
+        } else {
+            System.out.println("Интервал пересечения 2-х диапазонов: " + range.getFrom() + " - " + range.getTo());
         }
     }
-
 }

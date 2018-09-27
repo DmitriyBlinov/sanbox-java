@@ -6,20 +6,24 @@ public class RangeCheckNumber {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        System.out.print("Введите два вещественных числа через пробел: ");
+        System.out.print("Введите два вещественных числа 1-го диапазона через пробел: ");
         String usersRange = scanner.nextLine();
-
         String[] rangeToArray = usersRange.split(" ");
+        double from1 = Double.parseDouble(rangeToArray[0]);
+        double to1 = Double.parseDouble(rangeToArray[1]);
 
-        double firstNumber = Double.parseDouble(rangeToArray[0]);
-        double secondNumber = Double.parseDouble(rangeToArray[1]);
+        System.out.print("Введите два вещественных числа 2-го диапазона через пробел: ");
+        String usersRange2 = scanner.nextLine();
+        String[] rangeToArray2 = usersRange2.split(" ");
+        double from2 = Double.parseDouble(rangeToArray2[0]);
+        double to2 = Double.parseDouble(rangeToArray2[1]);
 
         System.out.print("Введите искомое вещественное число: ");
         double usersNumber = scanner.nextDouble();
 
-        Range range = new Range(firstNumber, secondNumber);
-        range.setFrom(firstNumber);
-        range.setTo(secondNumber);
+        Range range = new Range(from1, to1);
+
+        Range range2 = new Range(from2, to2);
 
         if (range.isInside(usersNumber)) {
             System.out.println("Ваше число принадлежит диапазону от " + range.getFrom() + " до " + range.getTo());
@@ -28,6 +32,8 @@ public class RangeCheckNumber {
         }
 
         double length = range.calculateLength();
-        System.out.println("Длина отрезка: " + length);
+        System.out.println("Длина отрезка 1-го диапазона: " + length);
+
+        range2.checkRangeCrossing(range.getFrom(), range.getTo());
     }
 }
