@@ -26,7 +26,7 @@ public class Range {
     }
 
     public double calculateLength() {
-        return to - from;
+        return Math.abs(to - from);
     }
 
     public boolean isInside(double number) {
@@ -34,14 +34,96 @@ public class Range {
 
     }
 
-    public double[] checkCrossing(double from1, double to1, double from2, double to2) {
-        if ((from1 > to2) || (to1 < from2)) {
-            return null;
+    public void getCrossingOfRanges(double from, double to) {
+        Range range = new Range(this.from, this.to);
+        if ((from > this.to) || (to < this.from)) {
+            range = null;
         } else {
-            from = from1 > from2 ? from1 : from2;
-            to = to1 > to2 ? to2 : to1;
+            if ((from >= this.from) && (from <= this.to)) {
+                if (to <= this.to) {
+                    range.setFrom(from);
+                    range.setTo(to);
+                } else if (to > this.to) {
+                    range.setFrom(from);
+                    range.setTo(this.to);
+                }
+            } else {
+                if (to <= this.to) {
+                    range.setFrom(this.from);
+                    range.setTo(to);
+                } else if (to > this.to) {
+                    range.setFrom(this.from);
+                    range.setTo(this.to);
+                }
+            }
         }
-        return
+        if (range == null) {
+            System.out.println("Интервалы не пересекаются");
+        } else {
+            System.out.println("Интервал пересечения 2-х диапазонов: " + range.getFrom() + " - " + range.getTo());
+        }
     }
 
+    public void getUnionOfRanges(double from, double to) {
+        Range[] range = new Range[2];
+        range[0] = new Range(this.from, this.to);
+        range[1] = new Range(from, to);
+
+        if ((this.from > to) || (this.to < from)) {
+            range[0] = new Range(this.from, this.to);
+            range[1] = new Range(from, to);
+            System.out.print("Результат объединения интервалов: " + range[0].getFrom() + " - " + range[0].getTo());
+            System.out.println(", " + range[1].getFrom() + " - " + range[1].getTo());
+        } else {
+            if ((this.from < from)) {
+                if (this.to > to) {
+                    System.out.print("Результат объединения интервалов: " + range[0].getFrom() + " - " + range[0].getTo());
+                } else {
+                    range[0] = new Range(this.from, to);
+                    System.out.print("Результат объединения интервалов: " + range[0].getFrom() + " - " + range[0].getTo());
+                }
+            } else if (this.from >= from) {
+                if (this.to > to) {
+                    range[0] = new Range(from, this.to);
+                    System.out.print("Результат объединения интервалов: " + range[0].getFrom() + " - " + range[0].getTo());
+                } else {
+                    range[0] = new Range(from, to);
+                    System.out.print("Результат объединения интервалов: " + range[0].getFrom() + " - " + range[0].getTo());
+                }
+            }
+        }
+    }
+
+    public void getComplementOfRanges(double from, double to) {
+        Range[] range = new Range[2];
+        range[0] = new Range(this.from, this.to);
+        range[1] = new Range(from, to);
+
+        double epsilon = 1.0e-10;
+        if ((this.from > to) || (this.to < from)) {
+            range[0] = new Range(this.from, this.to);
+            System.out.println("Результат разности данных интервалов: " + range[0].getFrom() + " - " + range[0].getTo());
+        } else {
+            if (this.from < from) {
+                if ((this.to >= from) && (this.to <= to)) {
+                    range[0].setFrom(this.from);
+                    range[0].setTo(from - epsilon);
+                    System.out.println("Результат разности данных интервалов: " + range[0].getFrom() + " - " + range[0].getTo());
+                } else {
+                    range[0] = new Range(this.from, from - epsilon);
+                    range[1] = new Range(to - epsilon, this.to);
+                    System.out.print("Результат разности данных интервалов: " + range[0].getFrom() + " - " + range[0].getTo());
+                    System.out.println(", " + range[1].getFrom() + " - " + range[1].getTo());
+                }
+            } else if ((this.from >= from) && (this.from <= to)) {
+                if ((this.to >= from) && (this.to <= to)) {
+                    System.out.println("Результат разности данных интервалов: 1-ый интервал полностью входит во 2-ой");
+                } else {
+                    range[0].setFrom(to - epsilon);
+                    range[0].setTo(this.to);
+                    System.out.println("Результат разности данных интервалов: " + range[0].getFrom() + " - " + range[0].getTo());
+                }
+            }
+        }
+    }
 }
