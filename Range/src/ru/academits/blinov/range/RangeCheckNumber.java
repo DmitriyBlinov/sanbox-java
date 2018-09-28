@@ -18,8 +18,6 @@ public class RangeCheckNumber {
         double usersNumber = scanner.nextDouble();
 
         Range range = new Range(firstNumber, secondNumber);
-        range.setFrom(firstNumber);
-        range.setTo(secondNumber);
 
         if (range.isInside(usersNumber)) {
             System.out.println("Ваше число принадлежит диапазону от " + range.getFrom() + " до " + range.getTo());
@@ -29,5 +27,12 @@ public class RangeCheckNumber {
 
         double length = range.calculateLength();
         System.out.println("Длина отрезка: " + length);
+
+        double fNum = 5.2;
+        double secNum = 8.0;
+        Range range2 = new Range (fNum, secNum);
+
+        range.checkCrossing(firstNumber, secondNumber, fNum, secNum);
+        System.out.println(range.getFrom() + " " + range.getTo());
     }
 }
