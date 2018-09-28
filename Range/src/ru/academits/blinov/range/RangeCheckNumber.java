@@ -34,6 +34,8 @@ public class RangeCheckNumber {
         double length = range.calculateLength();
         System.out.println("Длина отрезка 1-го диапазона: " + length);
 
-        range2.checkRangeCrossing(range.getFrom(), range.getTo());
+        range.getCrossingOfRanges(range2.getFrom(), range2.getTo());
+        range.getComplementOfRanges(range2.getFrom(), range2.getTo());
+        range.getUnionOfRanges(range2.getFrom(), range2.getTo());
     }
 }
