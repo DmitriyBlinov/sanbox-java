@@ -26,7 +26,7 @@ public class Range {
     }
 
     public double calculateLength() {
-        return to - from;
+        return Math.abs(to - from);
     }
 
     public boolean isInside(double number) {
@@ -36,22 +36,22 @@ public class Range {
 
     public void getCrossingOfRanges(double from, double to) {
         Range range = new Range(this.from, this.to);
-        if ((Math.abs(from) > Math.abs(this.to)) || (Math.abs(to) < Math.abs(this.from))) {
+        if ((from > this.to) || (to < this.from)) {
             range = null;
         } else {
-            if ((Math.abs(from) >= Math.abs(this.from)) && (Math.abs(from) <= Math.abs(this.to))) {
-                if (Math.abs(to) <= Math.abs(this.to)) {
+            if ((from >= this.from) && (from <= this.to)) {
+                if (to <= this.to) {
                     range.setFrom(from);
                     range.setTo(to);
-                } else if (Math.abs(to) > Math.abs(this.to)) {
+                } else if (to > this.to) {
                     range.setFrom(from);
                     range.setTo(this.to);
                 }
             } else {
-                if (Math.abs(to) <= Math.abs(this.to)) {
+                if (to <= this.to) {
                     range.setFrom(this.from);
                     range.setTo(to);
-                } else if (Math.abs(to) > Math.abs(this.to)) {
+                } else if (to > this.to) {
                     range.setFrom(this.from);
                     range.setTo(this.to);
                 }
@@ -69,21 +69,21 @@ public class Range {
         range[0] = new Range(this.from, this.to);
         range[1] = new Range(from, to);
 
-        if ((Math.abs(this.from) > Math.abs(to)) || (Math.abs(this.to) < Math.abs(from))) {
+        if ((this.from > to) || (this.to < from)) {
             range[0] = new Range(this.from, this.to);
             range[1] = new Range(from, to);
             System.out.print("Результат объединения интервалов: " + range[0].getFrom() + " - " + range[0].getTo());
             System.out.println(", " + range[1].getFrom() + " - " + range[1].getTo());
         } else {
-            if ((Math.abs(this.from) < Math.abs(from))) {
-                if (Math.abs(this.to) > Math.abs(to)) {
+            if ((this.from < from)) {
+                if (this.to > to) {
                     System.out.print("Результат объединения интервалов: " + range[0].getFrom() + " - " + range[0].getTo());
                 } else {
                     range[0] = new Range(this.from, to);
                     System.out.print("Результат объединения интервалов: " + range[0].getFrom() + " - " + range[0].getTo());
                 }
-            } else if (Math.abs(this.from) >= Math.abs(from)) {
-                if (Math.abs(this.to) > Math.abs(to)) {
+            } else if (this.from >= from) {
+                if (this.to > to) {
                     range[0] = new Range(from, this.to);
                     System.out.print("Результат объединения интервалов: " + range[0].getFrom() + " - " + range[0].getTo());
                 } else {
@@ -100,12 +100,12 @@ public class Range {
         range[1] = new Range(from, to);
 
         double epsilon = 1.0e-10;
-        if ((Math.abs(this.from) > Math.abs(to)) || (Math.abs(this.to) < Math.abs(from))) {
+        if ((this.from > to) || (this.to < from)) {
             range[0] = new Range(this.from, this.to);
             System.out.println("Результат разности данных интервалов: " + range[0].getFrom() + " - " + range[0].getTo());
         } else {
-            if (Math.abs(this.from) < Math.abs(from)) {
-                if ((Math.abs(this.to) >= Math.abs(from)) && (Math.abs(this.to) <= Math.abs(to))) {
+            if (this.from < from) {
+                if ((this.to >= from) && (this.to <= to)) {
                     range[0].setFrom(this.from);
                     range[0].setTo(from - epsilon);
                     System.out.println("Результат разности данных интервалов: " + range[0].getFrom() + " - " + range[0].getTo());
@@ -115,8 +115,8 @@ public class Range {
                     System.out.print("Результат разности данных интервалов: " + range[0].getFrom() + " - " + range[0].getTo());
                     System.out.println(", " + range[1].getFrom() + " - " + range[1].getTo());
                 }
-            } else if ((Math.abs(this.from) >= Math.abs(from)) && (Math.abs(this.from) <= Math.abs(to))) {
-                if ((Math.abs(this.to) >= Math.abs(from)) && (Math.abs(this.to) <= Math.abs(to))) {
+            } else if ((this.from >= from) && (this.from <= to)) {
+                if ((this.to >= from) && (this.to <= to)) {
                     System.out.println("Результат разности данных интервалов: 1-ый интервал полностью входит во 2-ой");
                 } else {
                     range[0].setFrom(to - epsilon);
