@@ -2,7 +2,6 @@ package ru.academits.blinov.checkrange;
 
 import ru.academits.blinov.range.Range;
 
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class CheckRange {
@@ -12,8 +11,8 @@ public class CheckRange {
         System.out.print("Введите два вещественных числа 1-го интервала через пробел: ");
         String usersRange = scanner.nextLine();
         String[] rangeToArray = usersRange.split(" ");
-        double from1 = Double.parseDouble(rangeToArray[0]);
-        double to1 = Double.parseDouble(rangeToArray[1]);
+        double from = Double.parseDouble(rangeToArray[0]);
+        double to = Double.parseDouble(rangeToArray[1]);
 
         System.out.print("Введите два вещественных числа 2-го интервала через пробел: ");
         String usersRange2 = scanner.nextLine();
@@ -25,7 +24,7 @@ public class CheckRange {
         double usersNumber = scanner.nextDouble();
         System.out.println();
 
-        Range range = new Range(from1, to1);
+        Range range = new Range(from, to);
 
         if (range.isInside(usersNumber)) {
             System.out.println("Ваше число принадлежит интервалу от " + range.getFrom() + " до " + range.getTo());

@@ -71,14 +71,10 @@ public class Range {
                 return new Range[]{new Range(from, range.from), new Range(range.to, to)};
             }
         } else {
-            if ((to >= range.from) && (from <= range.to)) {
-                return null;
+            if (to > range.to) {
+                return new Range[]{new Range(range.to, to)};
             } else {
-                if (to > range.to) {
-                    return new Range[]{new Range(range.to, to)};
-                } else {
-                    return null;
-                }
+                return null;
             }
         }
     }
