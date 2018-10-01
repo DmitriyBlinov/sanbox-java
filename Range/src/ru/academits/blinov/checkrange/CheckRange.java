@@ -45,7 +45,7 @@ public class CheckRange {
         }
 
         Range complement[] = range.getComplementOfRanges(range2);
-        if (complement == null) {
+        if (complement.length == 0) {
             System.out.println("Разность интервалов: 1-й интервал полностью нах-ся во 2-ом");
         } else if (complement.length == 1) {
             System.out.println("Разность интервалов: " + complement[0].getFrom() + " - " + complement[0].getTo());

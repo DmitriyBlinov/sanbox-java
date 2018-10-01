@@ -34,35 +34,23 @@ public class Range {
     }
 
     public Range getCrossingOfRanges(Range range) {
-        if ((range.from > to) || (range.to < from)) {
+        if ((range.from >= to) || (range.to <= from)) {
             return null;
         }
-        if ((range.from >= from) && (range.from <= to)) {
-            if (range.to <= to) {
-                return new Range(range.from, range.to);
-            } else {
-                return new Range(range.from, to);
-            }
-        } else if (range.to <= to) {
-            return new Range(from, range.to);
-        } else {
-            return this;
-        }
+        return (new Range(Math.max(from, range.from), Math.min(range.to, to)));
     }
 
     public Range[] getUnionOfRanges(Range range) {
         if ((from > range.to) || (to < range.from)) {
-            return new Range[]{this, range};
+            return new Range[]{new Range(from, to), new Range(range.from, range.to)};
         } else {
-            double minFrom = from < range.from ? from : range.from;
-            double maxTo = to > range.to ? to : range.to;
-            return new Range[]{new Range(minFrom, maxTo)};
+            return new Range[]{new Range(Math.min(from, range.from), Math.max(to, range.to))};
         }
     }
 
     public Range[] getComplementOfRanges(Range range) {
-        if ((from > range.to) || (to < range.from)) {
-            return new Range[]{this};
+        if ((from >= range.to) || (to <= range.from)) {
+            return new Range[]{new Range(from, to)};
         }
         if (from < range.from) {
             if ((to >= range.from) && (to <= range.to)) {
@@ -74,7 +62,7 @@ public class Range {
             if (to > range.to) {
                 return new Range[]{new Range(range.to, to)};
             } else {
-                return null;
+                return new Range[0];
             }
         }
     }
