@@ -63,7 +63,7 @@ public class Vector {
         }
         components = currentVector;
     }
-
+    
     public void subtractVector(Vector vector) {
         if (getSize() == vector.getSize()) {
             for (int i = 0; i < getSize(); i++) {
