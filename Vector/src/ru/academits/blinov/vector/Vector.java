@@ -13,24 +13,21 @@ public class Vector {
     }
 
     public Vector(Vector vector) {
-        numbers = new double[vector.getSize()];
-        System.arraycopy(vector.numbers, 0, numbers, 0, vector.getSize());
+        numbers = Arrays.copyOf(vector.numbers, vector.getSize());
     }
 
     public Vector(double[] array) {
         if (array.length <= 0) {
             throw new IllegalArgumentException("Размерность вектора не может быть меньше или равна нулю!");
         }
-        numbers = new double[array.length];
-        System.arraycopy(array, 0, numbers, 0, array.length);
+        numbers = Arrays.copyOf(array, array.length);
     }
 
     public Vector(int n, double[] array) {
         if (n <= 0) {
             throw new IllegalArgumentException("Размерность вектора не может быть меньше или равна нулю!");
         }
-        numbers = new double[n];
-        System.arraycopy(array, 0, numbers, 0, array.length);
+        numbers = Arrays.copyOf(array, n);
     }
 
     public int getSize() {
@@ -52,40 +49,36 @@ public class Vector {
 
     public void addVector(Vector vector) {
         int maxSize = getSize() > vector.getSize() ? getSize() : vector.getSize();
-        Vector currentVector1 = new Vector(maxSize, numbers);
-        Vector currentVector2 = new Vector(maxSize, vector.numbers);
 
-        Vector sum = new Vector(maxSize);
+        double[] currentVector = Arrays.copyOf(numbers, maxSize);
+        double[] currentVector2 = Arrays.copyOf(vector.numbers, maxSize);
 
-        for (int i = 0; i < sum.getSize(); i++) {
-            sum.numbers[i] = currentVector1.numbers[i] + currentVector2.numbers[i];
+        for (int i = 0; i < maxSize; i++) {
+            currentVector[i] += currentVector2[i];
         }
-        this.numbers = sum.numbers;
+        numbers = Arrays.copyOf(currentVector, maxSize);
     }
 
     public void subtractVector(Vector vector) {
-        int maxSize = this.getSize() > vector.getSize() ? this.getSize() : vector.getSize();
-        Vector currentVector1 = new Vector(maxSize, this.numbers);
-        Vector currentVector2 = new Vector(maxSize, vector.numbers);
+        int maxSize = getSize() > vector.getSize() ? getSize() : vector.getSize();
 
-        Vector subtraction = new Vector(maxSize);
+        double[] currentVector = Arrays.copyOf(numbers, maxSize);
+        double[] currentVector2 = Arrays.copyOf(vector.numbers, maxSize);
 
-        for (int i = 0; i < subtraction.getSize(); i++) {
-            subtraction.numbers[i] = currentVector1.numbers[i] - currentVector2.numbers[i];
+        for (int i = 0; i < maxSize; i++) {
+            currentVector[i] -= currentVector2[i];
         }
-        this.numbers = subtraction.numbers;
+        numbers = Arrays.copyOf(currentVector, maxSize);
     }
 
-    public void multipleByScalar(int scalar) {
+    public void multipleByScalar(double scalar) {
         for (int i = 0; i < numbers.length; i++) {
             numbers[i] *= scalar;
         }
     }
 
     public void reverseVector() {
-        for (int i = 0; i < numbers.length; i++) {
-            numbers[i] *= -1;
-        }
+        multipleByScalar(-1);
     }
 
     public double calculateLength() {
@@ -105,40 +98,31 @@ public class Vector {
     }
 
     public static Vector addVector(Vector vector, Vector vector2) {
-        int maxSize = vector.getSize() > vector2.getSize() ? vector.getSize() : vector2.getSize();
-        Vector currentVector1 = new Vector(maxSize, vector.numbers);
-        Vector currentVector2 = new Vector(maxSize, vector2.numbers);
+        Vector currentVector = new Vector(vector);
+        Vector currentVector2 = new Vector(vector2);
 
-        Vector sum = new Vector(maxSize);
-
-        for (int i = 0; i < sum.getSize(); i++) {
-            sum.numbers[i] = currentVector1.numbers[i] + currentVector2.numbers[i];
-        }
-        return sum;
+        currentVector.addVector(currentVector2);
+        return currentVector;
     }
 
     public static Vector subtractVector(Vector vector, Vector vector2) {
-        int maxSize = vector.getSize() > vector2.getSize() ? vector.getSize() : vector2.getSize();
-        Vector currentVector1 = new Vector(maxSize, vector.numbers);
-        Vector currentVector2 = new Vector(maxSize, vector2.numbers);
+        Vector currentVector = new Vector(vector);
+        Vector currentVector2 = new Vector(vector2);
 
-        Vector subtraction = new Vector(maxSize);
-
-        for (int i = 0; i < subtraction.getSize(); i++) {
-            subtraction.numbers[i] = currentVector1.numbers[i] - currentVector2.numbers[i];
-        }
-        return subtraction;
+        currentVector.subtractVector(currentVector2);
+        return currentVector;
     }
 
-    public static Vector multiplyByVector(Vector vector, Vector vector2) {
+    public static double multiplyByVector(Vector vector, Vector vector2) {
         int maxSize = vector.getSize() > vector2.getSize() ? vector.getSize() : vector2.getSize();
-        Vector currentVector1 = new Vector(maxSize, vector.numbers);
-        Vector currentVector2 = new Vector(maxSize, vector2.numbers);
 
-        Vector multiple = new Vector(maxSize);
+        double[] currentNumbers = Arrays.copyOf(vector.numbers, maxSize);
+        double[] currentNumbers2 = Arrays.copyOf(vector2.numbers, maxSize);
 
-        for (int i = 0; i < multiple.getSize(); i++) {
-            multiple.numbers[i] = currentVector1.numbers[i] * currentVector2.numbers[i];
+        double multiple = 0.0;
+
+        for (int i = 0; i < maxSize; i++) {
+            multiple += currentNumbers[i] * currentNumbers2[i];
         }
         return multiple;
     }
