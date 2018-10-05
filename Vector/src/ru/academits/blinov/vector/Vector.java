@@ -1,4 +1,4 @@
-package ru.academits.blinov.checkshapes.vector;
+package ru.academits.blinov.vector;
 
 import java.util.Arrays;
 
@@ -48,34 +48,30 @@ public class Vector {
     }
 
     public void addVector(Vector vector) {
-        if (getSize() == vector.getSize()) {
-            for (int i = 0; i < getSize(); i++) {
+        if (getSize() >= vector.getSize()) {
+            for (int i = 0; i < vector.getSize(); i++) {
                 components[i] += vector.components[i];
             }
             return;
         }
 
-        int maxSize = getSize() > vector.getSize() ? getSize() : vector.getSize();
-        double[] currentVector = Arrays.copyOf(components, maxSize);
-
-        for (int i = 0; i < vector.getSize(); i++) {
+        double[] currentVector = Arrays.copyOf(components, vector.getSize());
+        for (int i = 0; i < currentVector.length; i++) {
             currentVector[i] += vector.components[i];
         }
         components = currentVector;
     }
     
     public void subtractVector(Vector vector) {
-        if (getSize() == vector.getSize()) {
-            for (int i = 0; i < getSize(); i++) {
+        if (getSize() >= vector.getSize()) {
+            for (int i = 0; i < vector.getSize(); i++) {
                 components[i] -= vector.components[i];
             }
             return;
         }
 
-        int maxSize = getSize() > vector.getSize() ? getSize() : vector.getSize();
-        double[] currentVector = Arrays.copyOf(components, maxSize);
-
-        for (int i = 0; i < vector.getSize(); i++) {
+        double[] currentVector = Arrays.copyOf(components, vector.getSize());
+        for (int i = 0; i < currentVector.length; i++) {
             currentVector[i] -= vector.components[i];
         }
         components = currentVector;
@@ -107,27 +103,24 @@ public class Vector {
         components[index] = newComponent;
     }
 
-    public static Vector addVector(Vector vector, Vector vector2) {
-        Vector currentVector = new Vector(vector);
-
+    public static Vector addVector(Vector vector1, Vector vector2) {
+        Vector currentVector = new Vector(vector1);
         currentVector.addVector(vector2);
         return currentVector;
     }
 
     public static Vector subtractVector(Vector vector, Vector vector2) {
         Vector currentVector = new Vector(vector);
-
         currentVector.subtractVector(vector2);
         return currentVector;
     }
 
-    public static double multiplyByVector(Vector vector, Vector vector2) {
-        int minSize = vector.getSize() < vector2.getSize() ? vector.getSize() : vector2.getSize();
-
+    public static double multiplyByVector(Vector vector1, Vector vector2) {
+        int minSize = Math.min(vector1.getSize(), vector2.getSize());
         double multiple = 0.0;
 
         for (int i = 0; i < minSize; i++) {
-            multiple += vector.components[i] * vector2.components[i];
+            multiple += vector1.components[i] * vector2.components[i];
         }
         return multiple;
     }

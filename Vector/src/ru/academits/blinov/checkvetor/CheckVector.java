@@ -1,6 +1,6 @@
-package ru.academits.blinov.checkshapes.checkvetor;
+package ru.academits.blinov.checkvetor;
 
-import ru.academits.blinov.checkshapes.vector.Vector;
+import ru.academits.blinov.vector.Vector;
 
 public class CheckVector {
     public static void main(String[] args) {
