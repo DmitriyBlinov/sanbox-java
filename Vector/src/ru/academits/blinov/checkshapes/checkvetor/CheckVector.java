@@ -1,10 +1,6 @@
-package ru.academits.blinov.checkvetor;
+package ru.academits.blinov.checkshapes.checkvetor;
 
-import ru.academits.blinov.vector.Vector;
-
-import static ru.academits.blinov.vector.Vector.addVector;
-import static ru.academits.blinov.vector.Vector.multiplyByVector;
-import static ru.academits.blinov.vector.Vector.subtractVector;
+import ru.academits.blinov.checkshapes.vector.Vector;
 
 public class CheckVector {
     public static void main(String[] args) {
@@ -18,15 +14,15 @@ public class CheckVector {
 
         vector.addVector(vector2);
         System.out.println("Прибавление 2-го вектора к 1-му: " + vector.toString());
-        System.out.println("Результат сложения векторов: " + addVector(vector, vector2).toString());
+        System.out.println("Результат сложения векторов: " + Vector.addVector(vector, vector2).toString());
 
         vector.subtractVector(vector2);
         System.out.println("Вычитание вещ.векторов: " + vector.toString());
-        System.out.println("Результат разности векторов: " + subtractVector(vector, vector2).toString());
+        System.out.println("Результат разности векторов: " + Vector.subtractVector(vector, vector2).toString());
 
         vector.multipleByScalar(2);
         System.out.println("Умножения 1-го вектора на скаляр: " + vector.toString());
-        System.out.println("Скалярное произведение векторов: " + multiplyByVector(vector, vector2));
+        System.out.println("Скалярное произведение векторов: " + Vector.multiplyByVector(vector, vector2));
 
         System.out.println("Длина 1-го вектора: " + vector.calculateLength());
 

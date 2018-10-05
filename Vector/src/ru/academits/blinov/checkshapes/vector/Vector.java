@@ -1,37 +1,37 @@
-package ru.academits.blinov.vector;
+package ru.academits.blinov.checkshapes.vector;
 
 import java.util.Arrays;
 
 public class Vector {
-    private double[] numbers;
+    private double[] components;
 
     public Vector(int n) {
         if (n <= 0) {
             throw new IllegalArgumentException("Размерность вектора не может быть меньше или равна нулю!");
         }
-        numbers = new double[n];
+        components = new double[n];
     }
 
     public Vector(Vector vector) {
-        numbers = Arrays.copyOf(vector.numbers, vector.getSize());
+        components = Arrays.copyOf(vector.components, vector.getSize());
     }
 
     public Vector(double[] array) {
         if (array.length <= 0) {
             throw new IllegalArgumentException("Размерность вектора не может быть меньше или равна нулю!");
         }
-        numbers = Arrays.copyOf(array, array.length);
+        components = Arrays.copyOf(array, array.length);
     }
 
     public Vector(int n, double[] array) {
         if (n <= 0) {
             throw new IllegalArgumentException("Размерность вектора не может быть меньше или равна нулю!");
         }
-        numbers = Arrays.copyOf(array, n);
+        components = Arrays.copyOf(array, n);
     }
 
     public int getSize() {
-        return numbers.length;
+        return components.length;
     }
 
     @Override
@@ -39,7 +39,7 @@ public class Vector {
         StringBuilder stringBuilder = new StringBuilder();
 
         stringBuilder.append("{ ");
-        for (double e : numbers) {
+        for (double e : components) {
             stringBuilder.append(e).append(", ");
         }
         stringBuilder.delete(stringBuilder.length() - 2, stringBuilder.length()).append(" }");
@@ -48,32 +48,42 @@ public class Vector {
     }
 
     public void addVector(Vector vector) {
-        int maxSize = getSize() > vector.getSize() ? getSize() : vector.getSize();
-
-        double[] currentVector = Arrays.copyOf(numbers, maxSize);
-        double[] currentVector2 = Arrays.copyOf(vector.numbers, maxSize);
-
-        for (int i = 0; i < maxSize; i++) {
-            currentVector[i] += currentVector2[i];
+        if (getSize() == vector.getSize()) {
+            for (int i = 0; i < getSize(); i++) {
+                components[i] += vector.components[i];
+            }
+            return;
         }
-        numbers = Arrays.copyOf(currentVector, maxSize);
+
+        int maxSize = getSize() > vector.getSize() ? getSize() : vector.getSize();
+        double[] currentVector = Arrays.copyOf(components, maxSize);
+
+        for (int i = 0; i < vector.getSize(); i++) {
+            currentVector[i] += vector.components[i];
+        }
+        components = currentVector;
     }
 
     public void subtractVector(Vector vector) {
-        int maxSize = getSize() > vector.getSize() ? getSize() : vector.getSize();
-
-        double[] currentVector = Arrays.copyOf(numbers, maxSize);
-        double[] currentVector2 = Arrays.copyOf(vector.numbers, maxSize);
-
-        for (int i = 0; i < maxSize; i++) {
-            currentVector[i] -= currentVector2[i];
+        if (getSize() == vector.getSize()) {
+            for (int i = 0; i < getSize(); i++) {
+                components[i] -= vector.components[i];
+            }
+            return;
         }
-        numbers = Arrays.copyOf(currentVector, maxSize);
+
+        int maxSize = getSize() > vector.getSize() ? getSize() : vector.getSize();
+        double[] currentVector = Arrays.copyOf(components, maxSize);
+
+        for (int i = 0; i < vector.getSize(); i++) {
+            currentVector[i] -= vector.components[i];
+        }
+        components = currentVector;
     }
 
     public void multipleByScalar(double scalar) {
-        for (int i = 0; i < numbers.length; i++) {
-            numbers[i] *= scalar;
+        for (int i = 0; i < components.length; i++) {
+            components[i] *= scalar;
         }
     }
 
@@ -83,56 +93,48 @@ public class Vector {
 
     public double calculateLength() {
         double sum = 0;
-        for (double e : numbers) {
+        for (double e : components) {
             sum += Math.pow(e, 2);
         }
         return Math.sqrt(sum);
     }
 
     public double getComponent(int index) {
-        return numbers[index];
+        return components[index];
     }
 
     public void setComponent(int index, double newComponent) {
-        numbers[index] = newComponent;
+        components[index] = newComponent;
     }
 
     public static Vector addVector(Vector vector, Vector vector2) {
         Vector currentVector = new Vector(vector);
-        Vector currentVector2 = new Vector(vector2);
 
-        currentVector.addVector(currentVector2);
+        currentVector.addVector(vector2);
         return currentVector;
     }
 
     public static Vector subtractVector(Vector vector, Vector vector2) {
         Vector currentVector = new Vector(vector);
-        Vector currentVector2 = new Vector(vector2);
 
-        currentVector.subtractVector(currentVector2);
+        currentVector.subtractVector(vector2);
         return currentVector;
     }
 
     public static double multiplyByVector(Vector vector, Vector vector2) {
-        int maxSize = vector.getSize() > vector2.getSize() ? vector.getSize() : vector2.getSize();
-
-        double[] currentNumbers = Arrays.copyOf(vector.numbers, maxSize);
-        double[] currentNumbers2 = Arrays.copyOf(vector2.numbers, maxSize);
+        int minSize = vector.getSize() < vector2.getSize() ? vector.getSize() : vector2.getSize();
 
         double multiple = 0.0;
 
-        for (int i = 0; i < maxSize; i++) {
-            multiple += currentNumbers[i] * currentNumbers2[i];
+        for (int i = 0; i < minSize; i++) {
+            multiple += vector.components[i] * vector2.components[i];
         }
         return multiple;
     }
 
     @Override
     public int hashCode() {
-        final int prime = 37;
-        int hash = 1;
-        hash = prime * hash + Arrays.hashCode(numbers);
-        return hash;
+        return Arrays.hashCode(components);
     }
 
     @Override
@@ -144,6 +146,6 @@ public class Vector {
             return false;
         }
         Vector vector = (Vector) obj;
-        return (getSize() == vector.getSize()) && (Arrays.equals(numbers, vector.numbers));
+        return Arrays.equals(components, vector.components);
     }
 }

@@ -1,4 +1,4 @@
-package ru.academits.blinov.range;
+package ru.academits.blinov.checkshapes.range;
 
 public class Range {
     private double from;

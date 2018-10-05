@@ -1,6 +1,6 @@
-package ru.academits.blinov.checkrange;
+package ru.academits.blinov.checkshapes.checkrange;
 
-import ru.academits.blinov.range.Range;
+import ru.academits.blinov.checkshapes.range.Range;
 
 import java.util.Scanner;
 
