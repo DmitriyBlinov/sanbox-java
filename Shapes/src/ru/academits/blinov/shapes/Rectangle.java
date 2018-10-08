@@ -23,4 +23,17 @@ public class Rectangle implements Shape {
     public double getHeight() {
         return height;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        stringBuilder.append("ПРЯМОУГОЛЬНИК (")
+                .append("a = " + getHeight() + ", ")
+                .append("b = " + getWidth() + ", ")
+                .append("S = " + getArea() + ", ")
+                .append("P = " + getPerimeter());
+
+        return stringBuilder.toString();
+    }
 }

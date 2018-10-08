@@ -22,4 +22,16 @@ public class Circle implements Shape {
     public double getPerimeter() {
         return 2 * Math.PI * radius;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        stringBuilder.append("КРУГ (")
+                .append("d = " + getWidth() + ", ")
+                .append("S = " + getArea() + ", ")
+                .append("P = " + getPerimeter() + ")");
+
+        return stringBuilder.toString();
+    }
 }

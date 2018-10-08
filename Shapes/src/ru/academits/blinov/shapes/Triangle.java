@@ -1,5 +1,7 @@
 package ru.academits.blinov.shapes;
 
+import java.util.Arrays;
+
 public class Triangle implements Shape{
     private double x1;
     private double x2;
@@ -42,4 +44,21 @@ public class Triangle implements Shape{
 
         return lengthAB + lengthBC + lengthAC;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        stringBuilder.append("ТРЕУГОЛЬНИК (")
+                .append("h = " + getHeight() + ", ")
+                .append("b = " + getWidth() + ", ")
+                .append("S = " + getArea() + ", ")
+                .append("P = " + getPerimeter() + ")");
+
+        return stringBuilder.toString();
+    }
+
+   // public int hashCode() {
+   //     return Arrays.hashCode(
+
 }

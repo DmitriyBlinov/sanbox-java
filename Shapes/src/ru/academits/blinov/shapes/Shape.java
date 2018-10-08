@@ -5,4 +5,5 @@ public interface Shape {
     double getHeight();
     double getArea();
     double getPerimeter();
+    String toString();
 }

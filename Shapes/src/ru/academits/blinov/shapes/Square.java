@@ -21,4 +21,16 @@ public class Square implements Shape{
     public double getHeight() {
         return length;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        stringBuilder.append("КВАДРАТ (")
+                .append("a = " + getHeight() + ", ")
+                .append("S = " + getArea() + ", ")
+                .append("P = " + getPerimeter() + ")");
+
+        return stringBuilder.toString();
+    }
 }
