@@ -4,7 +4,7 @@ public class Rectangle implements Shape {
     private double height;
     private double width;
 
-    public Rectangle (double height, double width) {
+    public Rectangle(double height, double width) {
         this.height = height;
         this.width = width;
     }
@@ -20,20 +20,33 @@ public class Rectangle implements Shape {
     public double getWidth() {
         return width;
     }
+
     public double getHeight() {
         return height;
     }
 
     @Override
     public String toString() {
-        StringBuilder stringBuilder = new StringBuilder();
+        return "ПРЯМОУГОЛЬНИК (" + "a = " + getHeight() + ", " + "b = " + getWidth() + ", " + "S = " + getArea() + ", " + "P = " + getPerimeter();
+    }
 
-        stringBuilder.append("ПРЯМОУГОЛЬНИК (")
-                .append("a = " + getHeight() + ", ")
-                .append("b = " + getWidth() + ", ")
-                .append("S = " + getArea() + ", ")
-                .append("P = " + getPerimeter());
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+        if ((obj == null) || (obj.getClass() != this.getClass())) {
+            return false;
+        }
+        Rectangle rectangle = (Rectangle) obj;
+        return (height == rectangle.height) && (width == rectangle.width);
+    }
 
-        return stringBuilder.toString();
+    @Override
+    public int hashCode() {
+        final int prime = 37;
+        int hash = 1;
+        hash = prime * hash + Double.hashCode(height) + Double.hashCode(width);
+        return hash;
     }
 }

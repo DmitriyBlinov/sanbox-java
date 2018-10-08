@@ -1,9 +1,9 @@
 package ru.academits.blinov.shapes;
 
-public class Square implements Shape{
+public class Square implements Shape {
     private double length;
 
-    public Square (double length) {
+    public Square(double length) {
         this.length = length;
     }
 
@@ -18,19 +18,33 @@ public class Square implements Shape{
     public double getWidth() {
         return length;
     }
+
     public double getHeight() {
         return length;
     }
 
     @Override
     public String toString() {
-        StringBuilder stringBuilder = new StringBuilder();
+        return "КВАДРАТ (" + "a = " + getHeight() + ", " + "S = " + getArea() + ", " + "P = " + getPerimeter() + ")";
+    }
 
-        stringBuilder.append("КВАДРАТ (")
-                .append("a = " + getHeight() + ", ")
-                .append("S = " + getArea() + ", ")
-                .append("P = " + getPerimeter() + ")");
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+        if ((obj == null) || (obj.getClass() != this.getClass())) {
+            return false;
+        }
+        Square square = (Square) obj;
+        return length == square.length;
+    }
 
-        return stringBuilder.toString();
+    @Override
+    public int hashCode() {
+        final int prime = 37;
+        int hash = 1;
+        hash = prime * hash + Double.hashCode(length);
+        return hash;
     }
 }

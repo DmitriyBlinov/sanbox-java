@@ -25,13 +25,26 @@ public class Circle implements Shape {
 
     @Override
     public String toString() {
-        StringBuilder stringBuilder = new StringBuilder();
+        return "КРУГ (" + "d = " + getWidth() + ", " + "S = " + getArea() + ", " + "P = " + getPerimeter() + ")";
+    }
 
-        stringBuilder.append("КРУГ (")
-                .append("d = " + getWidth() + ", ")
-                .append("S = " + getArea() + ", ")
-                .append("P = " + getPerimeter() + ")");
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+        if ((obj == null) || (obj.getClass() != this.getClass())) {
+            return false;
+        }
+        Circle circle = (Circle) obj;
+        return radius == circle.radius;
+    }
 
-        return stringBuilder.toString();
+    @Override
+    public int hashCode() {
+        final int prime = 37;
+        int hash = 1;
+        hash = prime * hash + Double.hashCode(radius);
+        return hash;
     }
 }
