@@ -41,7 +41,7 @@ public class Rectangle implements Shape {
         Rectangle rectangle = (Rectangle) obj;
         return (height == rectangle.height) && (width == rectangle.width);
     }
-
+    
     @Override
     public int hashCode() {
         final int prime = 37;
