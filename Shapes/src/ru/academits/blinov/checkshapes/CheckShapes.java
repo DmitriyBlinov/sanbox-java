@@ -3,6 +3,7 @@ package ru.academits.blinov.checkshapes;
 import ru.academits.blinov.comparators.AreaComparator;
 import ru.academits.blinov.comparators.PerimeterComparator;
 import ru.academits.blinov.shapes.*;
+
 import java.util.Arrays;
 
 public class CheckShapes {
