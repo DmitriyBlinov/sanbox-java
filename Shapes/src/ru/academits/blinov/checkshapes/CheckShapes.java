@@ -1,19 +1,18 @@
 package ru.academits.blinov.checkshapes;
 
+import ru.academits.blinov.comparators.AreaComparator;
+import ru.academits.blinov.comparators.PerimeterComparator;
 import ru.academits.blinov.shapes.*;
 import java.util.Arrays;
-import java.util.Comparator;
 
 public class CheckShapes {
     public static Shape findFigureWithMaxArea(Shape... shapes) {
-        Comparator<Shape> comparator = Comparator.comparingDouble(Shape::getArea);
-        Arrays.sort(shapes, comparator);
+        Arrays.sort(shapes, new AreaComparator());
         return shapes[shapes.length - 1];
     }
 
     public static Shape findFigureWithSecondMaxPerimeter(Shape... shapes) {
-        Comparator<Shape> comparator = Comparator.comparingDouble(Shape::getPerimeter);
-        Arrays.sort(shapes, comparator);
+        Arrays.sort(shapes, new PerimeterComparator());
         return shapes[shapes.length - 2];
     }
 
