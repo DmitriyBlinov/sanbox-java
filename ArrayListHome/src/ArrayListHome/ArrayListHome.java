@@ -19,7 +19,7 @@ public class ArrayListHome {
                     newNumbers.add(e);
                 }
             }
-            
+
             System.out.println("Без повторений: " + newNumbers);
 
             for (int i = 0; i < numbers.size(); i++) {
