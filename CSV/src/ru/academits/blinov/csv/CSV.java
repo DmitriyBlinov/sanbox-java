@@ -14,13 +14,17 @@ public class CSV {
     public static void main(String[] args) throws FileNotFoundException {
         try (PrintWriter writer = new PrintWriter("csvHTML.txt");
              Scanner scanner = new Scanner(new FileInputStream("csv.txt"))) {
-            writer.println("<table>");
+            writer.print("<table>");
             scanner.useDelimiter(",");
             while (scanner.hasNextLine()) {
                 writer.print("<tr>");
-                writer.print("<td>" + scanner.next() + "</td>");
+                while (scanner.hasNext()) {
+                    writer.print("<td>");
+                    writer.print(scanner.next());
+                    writer.print("</td>");
+                }
                 writer.print("</tr>");
-                writer.println("<br/>");
+                writer.print("</br>");
             }
             writer.print("</table>");
         }
