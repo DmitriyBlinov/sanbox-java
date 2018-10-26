@@ -1,15 +1,15 @@
 package ru.academits.blinov.matrix;
 
-import java.util.Vector;
+import ru.academits.blinov.vector.Vector;
 
 public class Matrix {
-    private double[][] matrix;
+    private Vector[] matrix;
 
     public Matrix(int n, int m) {
         for (int i = 0; i < n; i++) {
-            Vector vector = new Vector(m);
-            //this.matrix[i][] = vector.components;
-
+            matrix = new Vector[n];
+            Vector row = new Vector(m);
+            matrix[i] = row;
         }
     }
 }
