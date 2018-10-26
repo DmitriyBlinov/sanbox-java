@@ -14,11 +14,12 @@ public class ArrayListHome {
             System.out.println("Изначальная коллекция: " + numbers);
 
             ArrayList<Integer> newNumbers = new ArrayList<>();
-            for (int i = 0; i < numbers.size(); i++) {
-                if (!newNumbers.contains(numbers.get(i))) {
-                    newNumbers.add(numbers.get(i));
+            for (int e : numbers) {
+                if (!newNumbers.contains(e)) {
+                    newNumbers.add(e);
                 }
             }
+            
             System.out.println("Без повторений: " + newNumbers);
 
             for (int i = 0; i < numbers.size(); i++) {
