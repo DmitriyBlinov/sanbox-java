@@ -18,12 +18,6 @@ public class CSV {
             scanner.useDelimiter(",");
             while (scanner.hasNextLine()) {
                 writer.print("<tr>");
-                while (scanner.hasNext()) {
-                    writer.print("<td>");
-                    writer.print(scanner.next());
-                    writer.print("</td>");
-                }
-                writer.print("</tr>");
                 writer.print("</br>");
             }
             writer.print("</table>");
