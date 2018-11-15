@@ -5,12 +5,15 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class ArrayListHome {
-    public static void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] args) {
         ArrayList<Integer> numbers = new ArrayList<>();
-        try (Scanner scanner = new Scanner(new FileInputStream("list.txt"))) {
+        try (Scanner scanner = new Scanner(new FileInputStream("list1.txt"))) {
             while (scanner.hasNextInt()) {
                 numbers.add(scanner.nextInt());
             }
+        } catch (FileNotFoundException e){
+            System.out.println(e.getMessage());
+            return;
         }
         System.out.println("Изначальная коллекция: " + numbers);
 
