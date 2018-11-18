@@ -14,12 +14,15 @@ public class SinglyLinkedList<T> {
     }
 
     public T getHead() {
+        if (count == 0) {
+            throw new NullPointerException("Элемента не существует!");
+        }
         return head.getData();
     }
 
     public T getItem(int index) {
         if (index > count || index < 0) {
-            throw new NoSuchElementException("Элемента с таким индексом не существует!");
+            throw new NullPointerException("Элемента с таким индексом не существует!");
         }
         ListItem<T> p = head;
         for (int i = 0; i < index - 1; i++) {
@@ -29,15 +32,15 @@ public class SinglyLinkedList<T> {
     }
 
     public T setItem(T data, int index) {
-        if (index > count - 1 || index < 0) {
-            throw new NoSuchElementException("Элемента с таким индексом не существует!");
+        if (index >= count || index < 0) {
+            throw new NullPointerException("Элемента с таким индексом не существует!");
         }
         T temp = head.getData();
         if (count == 1) {
             head = new ListItem<>(data, null);
         } else {
             ListItem<T> p = head;
-            for (int i = 0; i < index - 1; i++) {
+            for (int i = 0; i <= index; i++) {
                 p = p.getNext();
             }
             temp = p.getData();
@@ -48,7 +51,7 @@ public class SinglyLinkedList<T> {
 
     public T removeItem(int index) {
         if (index > count || index < 0) {
-            throw new NoSuchElementException("Элемента с таким индексом не существует!");
+            throw new NullPointerException("Элемента с таким индексом не существует!");
         }
         ListItem<T> p = head;
         for (int i = 0; i < index - 1; i++) {
@@ -68,7 +71,7 @@ public class SinglyLinkedList<T> {
             head.setNext(p);
         } else {
             ListItem<T> p = head;
-            for (int i = 0; i < count - 1; i++) {
+            for (int i = 0; i <= count; i++) {
                 p = p.getNext();
             }
             ListItem<T> q = new ListItem<>(data, null);
@@ -80,7 +83,7 @@ public class SinglyLinkedList<T> {
     public void addAt(T data, int index) {
         ListItem<T> q = new ListItem<>(data);
         ListItem<T> p = head;
-        for (int i = 0; i < index - 1; i++) {
+        for (int i = 0; i <= index; i++) {
             p = p.getNext();
         }
         q.setNext(p.getNext());
@@ -132,10 +135,10 @@ public class SinglyLinkedList<T> {
 
     @Override
     public String toString() {
-        if (count == 0) {
-            throw new NullPointerException("Список пуст!");
-        }
         StringBuilder stringBuilder = new StringBuilder();
+        if (count == 0) {
+            return stringBuilder.append("{ ").append(" }").toString();
+        }
 
         stringBuilder.append("{ ");
         for (ListItem<T> p = head; p != null; p = p.getNext()) {

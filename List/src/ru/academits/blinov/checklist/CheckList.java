@@ -6,10 +6,10 @@ public class CheckList {
     public static void main(String[] args) {
         SinglyLinkedList<Integer> numbers = new SinglyLinkedList<>();
 
-        numbers.add(1);
+        /*numbers.add(1);
         numbers.add(3);
         numbers.add(5);
-        numbers.add(8);
+        numbers.add(8);*/
         System.out.println("Изначальный список: " + numbers.toString());
         System.out.println("Размер списка: " + numbers.getSize());
         System.out.println("Первый элемент: " + numbers.getHead());
