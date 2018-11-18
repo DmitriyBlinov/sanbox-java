@@ -8,7 +8,7 @@ public class ListItem<T> {
         this.data = data;
     }
 
-    public ListItem (T data, ListItem<T> next) {
+    public ListItem(T data, ListItem<T> next) {
         this.data = data;
         this.next = next;
     }
