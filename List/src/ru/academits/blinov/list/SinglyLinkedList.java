@@ -22,28 +22,15 @@ public class SinglyLinkedList<T> {
         if (index >= count || index < 0) {
             throw new NullPointerException("Элемента с таким индексом не существует!");
         }
-        ListItem<T> p = head;
-        for (int i = 0; i < index; i++) {
-            p = p.getNext();
-        }
-        return p.getData();
+        return findItem(index).getData();
     }
 
     public T setItem(T data, int index) {
         if (index >= count || index < 0) {
             throw new NullPointerException("Элемента с таким индексом не существует!");
         }
-        T temp = head.getData();
-        if (index == 0) {
-            head.setData(data);
-        } else {
-            ListItem<T> p = head;
-            for (int i = 0; i < index; i++) {
-                p = p.getNext();
-            }
-            temp = p.getData();
-            p.setData(data);
-        }
+        T temp = findItem(index).getData();
+        findItem(index).setData(data);
         return temp;
     }
 
@@ -51,12 +38,8 @@ public class SinglyLinkedList<T> {
         if (index >= count || index < 0) {
             throw new NullPointerException("Элемента с таким индексом не существует!");
         }
-        ListItem<T> p = head;
-        for (int i = 0; i < index - 1; i++) {
-            p = p.getNext();
-        }
-        T temp = p.getNext().getData();
-        p.setNext(p.getNext().getNext());
+        T temp = findItem(index).getNext().getData();
+        findItem(index).setNext(findItem(index).getNext().getNext());
         count--;
         return temp;
     }
@@ -68,9 +51,8 @@ public class SinglyLinkedList<T> {
             ListItem<T> p = new ListItem<>(data, null);
             head.setNext(p);
         } else {
-            ListItem<T> p = findItem(count);
             ListItem<T> q = new ListItem<>(data, null);
-            p.setNext(q);
+            findItem(count - 1).setNext(q);
         }
         count++;
     }
@@ -79,10 +61,13 @@ public class SinglyLinkedList<T> {
         if (index > count || index < 0) {
             throw new NullPointerException("Некорректный индекс");
         }
-        ListItem<T> q = new ListItem<>(data);
-        ListItem<T> p = findItem(index);
-        q.setNext(p.getNext());
-        p.setNext(q);
+        ListItem<T> q = new ListItem<>(data, head);
+        if (index == 0) {
+            head = q;
+        } else {
+            q.setNext(findItem(index - 1).getNext());
+            findItem(index - 1).setNext(q);
+        }
         count++;
     }
 
@@ -94,12 +79,10 @@ public class SinglyLinkedList<T> {
             count = true;
         }
         for (int i = 0; i < this.count - 1; i++, p = p.getNext()) {
-            //TODO можно вынести, конечно, в 2 if для проверки null там или не null
-            if ((p.getNext().getData() == data) || (p.getNext().getData().equals(data))) {
+            if (p.getNext().getData().equals(data)) {
                 p.setNext(p.getNext().getNext());
                 count = true;
                 this.count--;
-
             }
         }
         return count;
@@ -150,12 +133,12 @@ public class SinglyLinkedList<T> {
         return stringBuilder.toString();
     }
 
-    public ListItem<T> findItem (int index) {
+    public ListItem<T> findItem(int index) {
         if (index == 0) {
-           return head;
+            return head;
         }
         ListItem<T> p = head;
-        for (int i = 0; i < index - 1; i++) {
+        for (int i = 0; i < index; i++) {
             p = p.getNext();
         }
         return p;
