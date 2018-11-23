@@ -11,6 +11,7 @@ public class SinglyLinkedList<T> {
         return count;
     }
 
+    //Data головы
     public T getHead() {
         if (count == 0) {
             throw new NullPointerException("Элемента не существует!");
@@ -18,6 +19,7 @@ public class SinglyLinkedList<T> {
         return head.getData();
     }
 
+    //Data айтема
     public T getItem(int index) {
         if (index >= count || index < 0) {
             throw new NullPointerException("Элемента с таким индексом не существует!");
@@ -25,6 +27,7 @@ public class SinglyLinkedList<T> {
         return findItem(index).getData();
     }
 
+    //Изменить Data у айтема
     public T setItem(T data, int index) {
         if (index >= count || index < 0) {
             throw new NullPointerException("Элемента с таким индексом не существует!");
@@ -34,6 +37,7 @@ public class SinglyLinkedList<T> {
         return temp;
     }
 
+    //Удалить айтем по индексу
     public T removeItem(int index) {
         if (index >= count || index < 0) {
             throw new NullPointerException("Элемента с таким индексом не существует!");
@@ -44,6 +48,7 @@ public class SinglyLinkedList<T> {
         return temp;
     }
 
+    //Добавить айтем в конец
     public void add(T data) {
         if (count == 0) {
             head = new ListItem<>(data, null);
@@ -57,6 +62,7 @@ public class SinglyLinkedList<T> {
         count++;
     }
 
+    //Добавить айтем по индексу
     public void addAt(T data, int index) {
         if (index > count || index < 0) {
             throw new NullPointerException("Некорректный индекс");
@@ -71,23 +77,26 @@ public class SinglyLinkedList<T> {
         count++;
     }
 
+    //Удалить айтем по дате
     public boolean removeByData(T data) {
         boolean count = false;
         ListItem<T> p = head;
-        if ((p.getData().equals(data)) || (p.getData() == data)) {
+        if ((p.getData() == data) || (p.getData().equals(data))) {
             removeHead();
-            count = true;
+            return true;
         }
-        for (int i = 0; i < this.count - 1; i++, p = p.getNext()) {
-            if (p.getNext().getData().equals(data)) {
+        for (int i = 0; i < this.count - 1; p = p.getNext()) {
+            if ((p.getNext().getData() == null) || (p.getNext().getData().equals(data))) {
                 p.setNext(p.getNext().getNext());
                 count = true;
                 this.count--;
             }
         }
+
         return count;
     }
 
+    //Удалить голову
     public T removeHead() {
         if (count == 0) {
             throw new NullPointerException("Список пуст!");
@@ -98,6 +107,7 @@ public class SinglyLinkedList<T> {
         return temp;
     }
 
+    //Разворот
     public void reverseList() {
         for (ListItem<T> p = head, prev = null, temp; p != null; prev = p, p = temp) {
             temp = p.getNext();
@@ -106,6 +116,7 @@ public class SinglyLinkedList<T> {
         }
     }
 
+    //Копия
     public SinglyLinkedList<T> copy() {
         if (count == 0) {
             return new SinglyLinkedList<>();
@@ -133,7 +144,8 @@ public class SinglyLinkedList<T> {
         return stringBuilder.toString();
     }
 
-    public ListItem<T> findItem(int index) {
+    //Поиск элемента
+    private ListItem<T> findItem(int index) {
         if (index == 0) {
             return head;
         }
