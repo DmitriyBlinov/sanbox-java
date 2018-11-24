@@ -11,7 +11,6 @@ public class SinglyLinkedList<T> {
         return count;
     }
 
-    //Data головы
     public T getHead() {
         if (count == 0) {
             throw new NullPointerException("Элемента не существует!");
@@ -19,7 +18,6 @@ public class SinglyLinkedList<T> {
         return head.getData();
     }
 
-    //Data айтема
     public T getItem(int index) {
         if (index >= count || index < 0) {
             throw new NullPointerException("Элемента с таким индексом не существует!");
@@ -27,7 +25,6 @@ public class SinglyLinkedList<T> {
         return findItem(index).getData();
     }
 
-    //Изменить Data у айтема
     public T setItem(T data, int index) {
         if (index >= count || index < 0) {
             throw new NullPointerException("Элемента с таким индексом не существует!");
@@ -37,18 +34,20 @@ public class SinglyLinkedList<T> {
         return temp;
     }
 
-    //Удалить айтем по индексу
     public T removeItem(int index) {
         if (index >= count || index < 0) {
             throw new NullPointerException("Элемента с таким индексом не существует!");
         }
-        T temp = findItem(index).getNext().getData();
-        findItem(index).setNext(findItem(index).getNext().getNext());
+        T temp = findItem(index).getData();
+        if (index == 0) {
+            removeHead();
+        } else {
+            findItem(index - 1).setNext(findItem(index).getNext());
+        }
         count--;
         return temp;
     }
 
-    //Добавить айтем в конец
     public void add(T data) {
         if (count == 0) {
             head = new ListItem<>(data, null);
@@ -62,7 +61,6 @@ public class SinglyLinkedList<T> {
         count++;
     }
 
-    //Добавить айтем по индексу
     public void addAt(T data, int index) {
         if (index > count || index < 0) {
             throw new NullPointerException("Некорректный индекс");
@@ -77,7 +75,6 @@ public class SinglyLinkedList<T> {
         count++;
     }
 
-    //Удалить айтем по дате
     public boolean removeByData(T data) {
         boolean count = false;
         ListItem<T> p = head;
@@ -85,18 +82,26 @@ public class SinglyLinkedList<T> {
             removeHead();
             return true;
         }
-        for (int i = 0; i < this.count - 1; p = p.getNext()) {
-            if ((p.getNext().getData() == null) || (p.getNext().getData().equals(data))) {
-                p.setNext(p.getNext().getNext());
-                count = true;
-                this.count--;
+        if (data == null) {
+            for (int i = 0; i < this.count - 1; i++, p = p.getNext()) {
+                if (p.getNext().getData() == null) {
+                    p.setNext(p.getNext().getNext());
+                    count = true;
+                    this.count--;
+                }
+            }
+        } else {
+            for (int i = 0; i < this.count - 1; i++, p = p.getNext()) {
+                if ((p.getNext().getData() != null) && (p.getNext().getData().equals(data))) {
+                    p.setNext(p.getNext().getNext());
+                    count = true;
+                    this.count--;
+                }
             }
         }
-
         return count;
     }
 
-    //Удалить голову
     public T removeHead() {
         if (count == 0) {
             throw new NullPointerException("Список пуст!");
@@ -107,7 +112,6 @@ public class SinglyLinkedList<T> {
         return temp;
     }
 
-    //Разворот
     public void reverseList() {
         for (ListItem<T> p = head, prev = null, temp; p != null; prev = p, p = temp) {
             temp = p.getNext();
@@ -116,7 +120,6 @@ public class SinglyLinkedList<T> {
         }
     }
 
-    //Копия
     public SinglyLinkedList<T> copy() {
         if (count == 0) {
             return new SinglyLinkedList<>();
@@ -132,9 +135,8 @@ public class SinglyLinkedList<T> {
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
         if (count == 0) {
-            return stringBuilder.append("[ ").append(" ]").toString();
+            return stringBuilder.append("[ ]").toString();
         }
-
         stringBuilder.append("[");
         for (ListItem<T> p = head; p != null; p = p.getNext()) {
             stringBuilder.append(p.getData()).append(", ");
@@ -144,7 +146,6 @@ public class SinglyLinkedList<T> {
         return stringBuilder.toString();
     }
 
-    //Поиск элемента
     private ListItem<T> findItem(int index) {
         if (index == 0) {
             return head;

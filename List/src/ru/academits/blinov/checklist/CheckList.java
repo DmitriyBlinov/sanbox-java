@@ -16,12 +16,12 @@ public class CheckList {
         System.out.println("Элемент по индексу 2: " + numbers.getItem(2));
 
         System.out.println("Измененный элемент: " + numbers.setItem(99, 2) + ", " + numbers.toString());
-        System.out.println("Удаленный элемент: " + numbers.removeItem(0));
+        System.out.println("Удаленный элемент: " + numbers.removeItem(1));
 
-        numbers.addAt(3, 2);
+        numbers.addAt(5, 2);
         System.out.println("Вставить по индексу 2: " + numbers.toString());
 
-        System.out.println("Удалить по data: " + numbers.removeByData(2) + ", " + numbers.toString());
+        System.out.println("Удалить по data: " + numbers.removeByData(null) + ", " + numbers.toString());
         System.out.println("Удалить head: " + numbers.removeHead() + ", " + numbers.toString());
 
         System.out.println("Копия списка: " + numbers.copy().toString());
