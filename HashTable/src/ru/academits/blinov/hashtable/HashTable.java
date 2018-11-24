@@ -5,8 +5,13 @@ import java.util.Collection;
 import java.util.Iterator;
 
 public class HashTable<T> implements Collection<T> {
+    //Как вообще делать, получается нужно создавать ArrayList, элементами которого будут массивы Hash[]?
+    //Какой длины нужно создавать, нужно ли подгонять под единый размер все хеши, ведь они могут получаться
+    //разной величины
+    //Какие элементы может принимать
     private int hash; //key
-    private ArrayList<Integer>[] table;
+    private Hash[] pairs;
+    private ArrayList<Hash> hashTable = new ArrayList<>();
 
     public HashTable () {
     }
@@ -16,8 +21,8 @@ public class HashTable<T> implements Collection<T> {
 
     public void add(int number) {
         final int prime = 37;
-        hash = prime * hash + number;
-
+        Hash pair = new Hash(prime * hash + number, number);
+        hashTable.add(pair);
     }
 
     @Override

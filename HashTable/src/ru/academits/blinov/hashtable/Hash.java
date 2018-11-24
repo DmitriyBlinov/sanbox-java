@@ -1,10 +1,10 @@
 package ru.academits.blinov.hashtable;
 
-public class Pair<K, V> {
+public class Hash<K, V> {
     private K key;
     private V value;
 
-    public Pair(K key, V value) {
+    public Hash(K key, V value) {
         this.key = key;
         this.value = value;
     }
