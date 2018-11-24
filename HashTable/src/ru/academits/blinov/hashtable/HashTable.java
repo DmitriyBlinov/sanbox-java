@@ -9,9 +9,9 @@ public class HashTable<T> implements Collection<T> {
     //Какой длины нужно создавать, нужно ли подгонять под единый размер все хеши, ведь они могут получаться
     //разной величины
     //Какие элементы может принимать
+    //Что именно должен хранить элемент таблицы key и value или это должен быть просто элемент, к примеру
     private int hash; //key
-    private Hash[] pairs;
-    private ArrayList<Hash> hashTable = new ArrayList<>();
+    private ArrayList<Hash> hashTable = new ArrayList<Hash>();
 
     public HashTable () {
     }
@@ -19,10 +19,11 @@ public class HashTable<T> implements Collection<T> {
     public HashTable (int size) {
     }
 
-    public void add(int number) {
+    @Override
+    public boolean add(T value) {
         final int prime = 37;
-        Hash pair = new Hash(prime * hash + number, number);
-        hashTable.add(pair);
+        hashTable.add(new Hash(1, 2));
+        return true;
     }
 
     @Override
@@ -53,11 +54,6 @@ public class HashTable<T> implements Collection<T> {
     @Override
     public <T1> T1[] toArray(T1[] a) {
         return null;
-    }
-
-    @Override
-    public boolean add(T t) {
-        return false;
     }
 
     @Override
