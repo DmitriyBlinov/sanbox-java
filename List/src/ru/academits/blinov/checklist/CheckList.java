@@ -6,6 +6,7 @@ public class CheckList {
     public static void main(String[] args) {
         SinglyLinkedList<Integer> numbers = new SinglyLinkedList<>();
 
+        numbers.addAtStart(0);
         numbers.add(1);
         numbers.add(3);
         numbers.add(5);
@@ -18,7 +19,7 @@ public class CheckList {
         System.out.println("Измененный элемент: " + numbers.setItem(99, 2) + ", " + numbers.toString());
         System.out.println("Удаленный элемент: " + numbers.removeItem(1));
 
-        numbers.addAt(5, 2);
+        numbers.addAt(77, 2);
         System.out.println("Вставить по индексу 2: " + numbers.toString());
 
         System.out.println("Удалить по data: " + numbers.removeByData(null) + ", " + numbers.toString());

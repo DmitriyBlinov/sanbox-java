@@ -1,10 +1,17 @@
 package ru.academits.blinov.list;
 
+import java.util.Objects;
+
 public class SinglyLinkedList<T> {
     private ListItem<T> head;
     private int count;
 
     public SinglyLinkedList() {
+    }
+
+    public SinglyLinkedList(T headData) {
+        head = new ListItem<>(headData, null);
+        count++;
     }
 
     public int getSize() {
@@ -20,40 +27,40 @@ public class SinglyLinkedList<T> {
 
     public T getItem(int index) {
         if (index >= count || index < 0) {
-            throw new NullPointerException("Элемента с таким индексом не существует!");
+            throw new IndexOutOfBoundsException("Элемента с таким индексом не существует!");
         }
         return findItem(index).getData();
     }
 
     public T setItem(T data, int index) {
         if (index >= count || index < 0) {
-            throw new NullPointerException("Элемента с таким индексом не существует!");
+            throw new IndexOutOfBoundsException("Элемента с таким индексом не существует!");
         }
-        T temp = findItem(index).getData();
-        findItem(index).setData(data);
+        ListItem<T> current = findItem(index);
+        T temp = current.getData();
+        current.setData(data);
         return temp;
     }
 
     public T removeItem(int index) {
         if (index >= count || index < 0) {
-            throw new NullPointerException("Элемента с таким индексом не существует!");
+            throw new IndexOutOfBoundsException("Элемента с таким индексом не существует!");
         }
-        T temp = findItem(index).getData();
+        T temp = head.getData();
         if (index == 0) {
             removeHead();
         } else {
-            findItem(index - 1).setNext(findItem(index).getNext());
+            ListItem<T> prev = findItem(index - 1);
+            temp = prev.getNext().getData();
+            prev.setNext(prev.getNext().getNext());
+            count--;
         }
-        count--;
         return temp;
     }
 
     public void add(T data) {
         if (count == 0) {
             head = new ListItem<>(data, null);
-        } else if (count == 1) {
-            ListItem<T> p = new ListItem<>(data, null);
-            head.setNext(p);
         } else {
             ListItem<T> q = new ListItem<>(data, null);
             findItem(count - 1).setNext(q);
@@ -63,43 +70,39 @@ public class SinglyLinkedList<T> {
 
     public void addAt(T data, int index) {
         if (index > count || index < 0) {
-            throw new NullPointerException("Некорректный индекс");
+            throw new IndexOutOfBoundsException("Некорректный индекс");
         }
-        ListItem<T> q = new ListItem<>(data, head);
+        ListItem<T> p = new ListItem<>(data, head);
         if (index == 0) {
-            head = q;
+            head = p;
         } else {
-            q.setNext(findItem(index - 1).getNext());
-            findItem(index - 1).setNext(q);
+            ListItem<T> q = findItem(index - 1);
+            p.setNext(q.getNext());
+            q.setNext(p);
         }
         count++;
     }
 
+    public void addAtStart(T data) {
+        head = new ListItem<>(data, head);
+        count++;
+    }
+
     public boolean removeByData(T data) {
-        boolean count = false;
         ListItem<T> p = head;
-        if ((p.getData() == data) || (p.getData().equals(data))) {
+        if (Objects.equals(p, data)) {
             removeHead();
             return true;
         }
-        if (data == null) {
-            for (int i = 0; i < this.count - 1; i++, p = p.getNext()) {
-                if (p.getNext().getData() == null) {
-                    p.setNext(p.getNext().getNext());
-                    count = true;
-                    this.count--;
-                }
+        while (p.getNext() != null) {
+            if (Objects.equals(p.getNext().getData(), data)) {
+                p.setNext(p.getNext().getNext());
+                this.count--;
+                return true;
             }
-        } else {
-            for (int i = 0; i < this.count - 1; i++, p = p.getNext()) {
-                if ((p.getNext().getData() != null) && (p.getNext().getData().equals(data))) {
-                    p.setNext(p.getNext().getNext());
-                    count = true;
-                    this.count--;
-                }
-            }
+            p = p.getNext();
         }
-        return count;
+        return false;
     }
 
     public T removeHead() {
@@ -124,9 +127,10 @@ public class SinglyLinkedList<T> {
         if (count == 0) {
             return new SinglyLinkedList<>();
         }
-        SinglyLinkedList<T> temp = new SinglyLinkedList<>();
-        for (ListItem<T> p = head; p != null; p = p.getNext()) {
-            temp.add(p.getData());
+        SinglyLinkedList<T> temp = new SinglyLinkedList<>(head.getData());
+        for (ListItem<T> p = head.getNext(), q = temp.head; p != null; p = p.getNext(), q = q.getNext()) {
+            q.setNext(new ListItem<>(p.getData(), null));
+            temp.count++;
         }
         return temp;
     }

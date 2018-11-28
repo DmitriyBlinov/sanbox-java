@@ -1,43 +1,46 @@
 package ru.academits.blinov.hashtable;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
+import java.util.*;
 
 public class HashTable<T> implements Collection<T> {
-    //Как вообще делать, получается нужно создавать ArrayList, элементами которого будут массивы Hash[]?
-    //Какой длины нужно создавать, нужно ли подгонять под единый размер все хеши, ведь они могут получаться
-    //разной величины
-    //Какие элементы может принимать
-    //Что именно должен хранить элемент таблицы key и value или это должен быть просто элемент, к примеру
-    private int hash; //key
-    private ArrayList<Hash> hashTable = new ArrayList<Hash>();
+    private ArrayList<T>[] hashTable = new ArrayList<T>[8];
 
-    public HashTable () {
+    public HashTable() {
     }
 
-    public HashTable (int size) {
+    public HashTable(int size) {
     }
 
     @Override
     public boolean add(T value) {
-        final int prime = 37;
-        hashTable.add(new Hash(1, 2));
+        int index = value.hashCode() % size();
+        if (hashTable[index] == null) {
+            hashTable[index] = new ArrayList<>();
+        }
+        hashTable[index].add(value);
         return true;
     }
 
     @Override
     public int size() {
-        return 0;
+        if (hashTable.length == 0) {
+            return 0;
+        }
+        return hashTable.length;
     }
 
     @Override
     public boolean isEmpty() {
-        return false;
+        return hashTable.length == 0;
     }
 
     @Override
     public boolean contains(Object o) {
+        for (ArrayList<T> e : hashTable) {
+            if (e.contains(o)) {
+                return true;
+            }
+        }
         return false;
     }
 
@@ -46,19 +49,25 @@ public class HashTable<T> implements Collection<T> {
         return null;
     }
 
+    //возвращает массив, в от-ом содержатся все элементы коллекции
     @Override
     public Object[] toArray() {
-        return new Object[0];
+        return Arrays.copyOf(hashTable, size());
     }
 
     @Override
-    public <T1> T1[] toArray(T1[] a) {
-        return null;
+    public <T> T[] toArray(T[] array) {
+        //array = Arrays.copyOf(hashTable, size());
+        return array;
     }
 
     @Override
     public boolean remove(Object o) {
-        return false;
+        boolean isDeleted = false;
+        for (ArrayList<T> e : hashTable) {
+            isDeleted = e.remove(o);
+        }
+        return isDeleted;
     }
 
     @Override
@@ -73,18 +82,32 @@ public class HashTable<T> implements Collection<T> {
 
     @Override
     public boolean removeAll(Collection<?> c) {
-        return false;
+        boolean isDeleted = false;
+        for (ArrayList<T> e : hashTable) {
+            isDeleted = e.removeAll(c);
+        }
+        return isDeleted;
     }
-
-
 
     @Override
     public boolean retainAll(Collection<?> c) {
-        return false;
+        boolean isRetained = false;
+        for (ArrayList<T> e : hashTable) {
+            isRetained = e.retainAll(c);
+        }
+        return isRetained;
     }
 
     @Override
     public void clear() {
-
+        for (ArrayList<T> e : hashTable) {
+            e.clear();
+        }
     }
+
+    //Как вообще делать, получается нужно создавать ArrayList, элементами которого будут массивы Hash[]?
+    //Какой длины нужно создавать, нужно ли подгонять под единый размер все хеши, ведь они могут получаться
+    //разной величины
+    //Какие элементы может принимать
+    //Что именно должен хранить элемент таблицы key и value или это должен быть просто элемент, к примеру
 }
