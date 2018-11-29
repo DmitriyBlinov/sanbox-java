@@ -46,15 +46,15 @@ public class SinglyLinkedList<T> {
         if (index >= count || index < 0) {
             throw new IndexOutOfBoundsException("Элемента с таким индексом не существует!");
         }
-        T temp = head.getData();
         if (index == 0) {
+            T temp = head.getData();
             removeHead();
-        } else {
-            ListItem<T> prev = findItem(index - 1);
-            temp = prev.getNext().getData();
-            prev.setNext(prev.getNext().getNext());
-            count--;
+            return temp;
         }
+        ListItem<T> prev = findItem(index - 1);
+        T temp = prev.getNext().getData();
+        prev.setNext(prev.getNext().getNext());
+        count--;
         return temp;
     }
 
@@ -72,7 +72,7 @@ public class SinglyLinkedList<T> {
         if (index > count || index < 0) {
             throw new IndexOutOfBoundsException("Некорректный индекс");
         }
-        ListItem<T> p = new ListItem<>(data, head);
+        ListItem<T> p = new ListItem<>(data, null);
         if (index == 0) {
             head = p;
         } else {
@@ -84,13 +84,17 @@ public class SinglyLinkedList<T> {
     }
 
     public void addAtStart(T data) {
-        head = new ListItem<>(data, head);
+        if (count == 0) {
+            head = new ListItem<>(data, null);
+        } else {
+            head = new ListItem<>(data, head);
+        }
         count++;
     }
 
     public boolean removeByData(T data) {
         ListItem<T> p = head;
-        if (Objects.equals(p, data)) {
+        if (Objects.equals(p.getData(), data)) {
             removeHead();
             return true;
         }
@@ -130,8 +134,8 @@ public class SinglyLinkedList<T> {
         SinglyLinkedList<T> temp = new SinglyLinkedList<>(head.getData());
         for (ListItem<T> p = head.getNext(), q = temp.head; p != null; p = p.getNext(), q = q.getNext()) {
             q.setNext(new ListItem<>(p.getData(), null));
-            temp.count++;
         }
+        temp.count = count;
         return temp;
     }
 
