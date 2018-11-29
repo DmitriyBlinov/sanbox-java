@@ -3,7 +3,7 @@ package ru.academits.blinov.hashtable;
 import java.util.*;
 
 public class HashTable<T> implements Collection<T> {
-    private ArrayList<T>[] hashTable = new ArrayList<T>[8];
+    private ArrayList<ArrayList<T>> hash = new ArrayList<>();
 
     public HashTable() {
     }
@@ -13,6 +13,7 @@ public class HashTable<T> implements Collection<T> {
 
     @Override
     public boolean add(T value) {
+        hash.add(ArrayList<T>(value), )
         int index = value.hashCode() % size();
         if (hashTable[index] == null) {
             hashTable[index] = new ArrayList<>();

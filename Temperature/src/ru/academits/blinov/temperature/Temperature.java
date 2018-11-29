@@ -2,8 +2,11 @@ package ru.academits.blinov.temperature;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class Temperature {
+
     public static double convertCelsiusToFahrenheit(double temperatureCelsius) {
         return (temperatureCelsius * 1.8 + 32);
     }
@@ -15,23 +18,37 @@ public class Temperature {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             JFrame frame = new JFrame("Конвертация температур");
-            frame.setSize(500,200);
+            frame.setSize(330, 130);
             frame.setLocationRelativeTo(null);
             frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
             frame.setVisible(true);
 
-            frame.setLayout(new GridLayout(4,2));
+            frame.setLayout(new FlowLayout());
 
-            JLabel celsius, fahrenheit, kelvin;
+            JLabel welcome, convert, result;
 
-            JButton convert = new JButton("Конвертировать в Фаренгейты");
-            celsius = new JLabel("По Цельсию: ");
-            fahrenheit = new JLabel("По Фаренгейту: ");
-            kelvin = new JLabel("По Кельвину: ");
-
-            add(convert, GridLayout);
+            JButton convertToFahrenheit = new JButton("Фаренгейты");
+            JButton convertToKelvin = new JButton("Кельвины");
+            welcome = new JLabel("Введите температуру по Цельсию: ");
+            convert = new JLabel("Перевести в: ");
 
 
+            JTextField celsius = new JTextField("0", 7);
+            frame.add(welcome);
+            frame.add(celsius);
+            frame.add(convert);
+            frame.add(convertToFahrenheit);
+            frame.add(convertToKelvin);
+
+            String text = celsius.getText();
+            int number = Integer.parseInt(text);
+
+            convertToFahrenheit.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    frame.add(new JLabel("Результат: " + convertCelsiusToFahrenheit(number) + "°F"));
+                    frame.add(new JLabel("asdasdasdasd"));
+                }
+            });
         });
     }
 }
