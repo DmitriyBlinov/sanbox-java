@@ -2,19 +2,21 @@ package ru.academits.blinov.hashtable;
 
 import java.util.*;
 
+//геттер и сеттер для элементов? Сделать итератор
 public class HashTable<T> implements Collection<T> {
-    private ArrayList<ArrayList<T>> hash = new ArrayList<>();
+    private ArrayList<T>[] hashTable;
 
     public HashTable() {
+        hashTable = new ArrayList[]{};
     }
 
     public HashTable(int size) {
+        hashTable = new ArrayList[size];
     }
 
     @Override
     public boolean add(T value) {
-        hash.add(ArrayList<T>(value), )
-        int index = value.hashCode() % size();
+        int index = Math.abs(value.hashCode() % size());
         if (hashTable[index] == null) {
             hashTable[index] = new ArrayList<>();
         }
@@ -50,7 +52,6 @@ public class HashTable<T> implements Collection<T> {
         return null;
     }
 
-    //возвращает массив, в от-ом содержатся все элементы коллекции
     @Override
     public Object[] toArray() {
         return Arrays.copyOf(hashTable, size());
@@ -58,7 +59,6 @@ public class HashTable<T> implements Collection<T> {
 
     @Override
     public <T> T[] toArray(T[] array) {
-        //array = Arrays.copyOf(hashTable, size());
         return array;
     }
 
@@ -106,9 +106,18 @@ public class HashTable<T> implements Collection<T> {
         }
     }
 
-    //Как вообще делать, получается нужно создавать ArrayList, элементами которого будут массивы Hash[]?
-    //Какой длины нужно создавать, нужно ли подгонять под единый размер все хеши, ведь они могут получаться
-    //разной величины
-    //Какие элементы может принимать
-    //Что именно должен хранить элемент таблицы key и value или это должен быть просто элемент, к примеру
+    @Override
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        if (hashTable.length == 0) {
+            return stringBuilder.append("[ ]").toString();
+        }
+        stringBuilder.append("[");
+        for (ArrayList<T> e : hashTable) {
+            stringBuilder.append(e).append(", ");
+        }
+        stringBuilder.delete(stringBuilder.length() - 2, stringBuilder.length()).append("]");
+
+        return stringBuilder.toString();
+    }
 }
