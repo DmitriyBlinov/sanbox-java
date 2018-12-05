@@ -3,20 +3,22 @@ package ru.academits.blinov.hashtable;
 import java.util.*;
 
 public class HashTable<T> implements Collection<T> {
-    private ArrayList<ArrayList<T>> hash = new ArrayList<>();
+    private ArrayList<T>[] hashTable;
 
     public HashTable() {
+        hashTable = new ArrayList[]{};
     }
 
     public HashTable(int size) {
+        hashTable = new ArrayList[size];
     }
 
     @Override
     public boolean add(T value) {
-        hash.add(ArrayList<T>(value), )
         int index = value.hashCode() % size();
         if (hashTable[index] == null) {
             hashTable[index] = new ArrayList<>();
+            hashTable[index].add(value);
         }
         hashTable[index].add(value);
         return true;
@@ -56,9 +58,9 @@ public class HashTable<T> implements Collection<T> {
         return Arrays.copyOf(hashTable, size());
     }
 
+    //не устраивает, что я хочу, чтобы потом T поменялась на мой тип
     @Override
     public <T> T[] toArray(T[] array) {
-        //array = Arrays.copyOf(hashTable, size());
         return array;
     }
 
@@ -73,6 +75,11 @@ public class HashTable<T> implements Collection<T> {
 
     @Override
     public boolean containsAll(Collection<?> c) {
+        for (ArrayList<T> e : hashTable) {
+            for (T i : e) {
+
+            }
+        }
         return false;
     }
 
