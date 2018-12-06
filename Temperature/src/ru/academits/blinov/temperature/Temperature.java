@@ -46,6 +46,13 @@ public class Temperature {
                 frame.add(new JLabel("Результат: " + convertCelsiusToFahrenheit(number) + "°F"));
                 frame.setVisible(true);
             });
+
+            convertToKelvin.addActionListener((ActionEvent e) -> {
+                String text = celsius.getText();
+                int number = Integer.parseInt(text);
+                frame.add(new JLabel("Результат: " + convertCelsiusToKelvin(number) + "°K"));
+                frame.setVisible(true);
+            });
         });
     }
 }
