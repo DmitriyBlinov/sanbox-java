@@ -6,12 +6,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class Temperature {
-
-    public static double convertCelsiusToFahrenheit(double temperatureCelsius) {
+    private static double convertCelsiusToFahrenheit(double temperatureCelsius) {
         return (temperatureCelsius * 1.8 + 32);
     }
 
-    public static double convertCelsiusToKelvin(double temperatureCelsius) {
+    private static double convertCelsiusToKelvin(double temperatureCelsius) {
         return (temperatureCelsius + 273.15);
     }
 
@@ -22,36 +21,32 @@ public class Temperature {
             frame.setLocationRelativeTo(null);
             frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
             frame.setVisible(true);
-
             frame.setLayout(new FlowLayout());
 
-            JLabel welcome, convert, result;
+            frame.add(new JLabel("Введите температуру по Цельсию: "));
+            JTextField celsius = new JTextField("0", 7);
+            frame.add(celsius);
+            frame.add(new JLabel("Перевести в: "));
 
             JButton convertToFahrenheit = new JButton("Фаренгейты");
-            JButton convertToKelvin = new JButton("Кельвины");
-            welcome = new JLabel("Введите температуру по Цельсию: ");
-            convert = new JLabel("Перевести в: ");
-
-
-            JTextField celsius = new JTextField("0", 7);
-            frame.add(welcome);
-            frame.add(celsius);
-            frame.add(convert);
             frame.add(convertToFahrenheit);
+
+            JButton convertToKelvin = new JButton("Кельвины");
             frame.add(convertToKelvin);
+
+            JLabel result = new JLabel("Результат: ");
+            frame.add(result);
 
             convertToFahrenheit.addActionListener((ActionEvent e) -> {
                 String text = celsius.getText();
                 int number = Integer.parseInt(text);
-                frame.add(new JLabel("Результат: " + convertCelsiusToFahrenheit(number) + "°F"));
-                frame.setVisible(true);
+                result.setText("Результат: " + convertCelsiusToFahrenheit(number) + "°F");
             });
 
             convertToKelvin.addActionListener((ActionEvent e) -> {
                 String text = celsius.getText();
                 int number = Integer.parseInt(text);
-                frame.add(new JLabel("Результат: " + convertCelsiusToKelvin(number) + "°K"));
-                frame.setVisible(true);
+                result.setText("Результат: " + convertCelsiusToKelvin(number) + "°K");
             });
         });
     }
