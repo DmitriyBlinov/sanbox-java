@@ -40,14 +40,11 @@ public class Temperature {
             frame.add(convertToFahrenheit);
             frame.add(convertToKelvin);
 
-            String text = celsius.getText();
-            int number = Integer.parseInt(text);
-
-            convertToFahrenheit.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    frame.add(new JLabel("Результат: " + convertCelsiusToFahrenheit(number) + "°F"));
-                    frame.add(new JLabel("asdasdasdasd"));
-                }
+            convertToFahrenheit.addActionListener((ActionEvent e) -> {
+                String text = celsius.getText();
+                int number = Integer.parseInt(text);
+                frame.add(new JLabel("Результат: " + convertCelsiusToFahrenheit(number) + "°F"));
+                frame.setVisible(true);
             });
         });
     }
