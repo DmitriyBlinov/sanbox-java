@@ -49,7 +49,27 @@ public class HashTable<T> implements Collection<T> {
 
     @Override
     public Iterator<T> iterator() {
-        return null;
+        return new Iterator<>() {
+            private int currentIndex = 0;
+            private int currentInnerIndex = 0;
+
+            @Override
+            public boolean hasNext() {
+                return currentIndex < hashTable.length
+                        && hashTable[currentIndex].size() < currentInnerIndex
+                        && hashTable[currentIndex].get(currentInnerIndex) != null;
+            }
+
+            @Override
+            public T next() {
+                return hashTable[currentIndex].get(currentInnerIndex++);
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        };
     }
 
     @Override
