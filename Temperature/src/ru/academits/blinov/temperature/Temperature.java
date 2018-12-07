@@ -3,6 +3,7 @@ package ru.academits.blinov.temperature;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.text.DecimalFormat;
 
 public class Temperature {
     private static double convertCelsiusToFahrenheit(double temperatureCelsius) {
@@ -48,7 +49,7 @@ public class Temperature {
             JComboBox comboBoxFrom = new JComboBox(scales);
             frame.add(comboBoxFrom);
 
-            frame.add(new JLabel(" в "));
+            frame.add(new JLabel(" В "));
 
             JTextField result = new JTextField("0", 5);
             result.setEditable(false);
@@ -61,75 +62,40 @@ public class Temperature {
             frame.add(convert);
 
             convert.addActionListener((ActionEvent e) -> {
+                if (usersTemperature.getText().isEmpty()) {
+                    usersTemperature.setText("0");
+                }
                 String text = usersTemperature.getText();
-                int number = Integer.parseInt(text);
-                switch (comboBoxFrom.getSelectedIndex()) {
-                    case 0:
-                        switch (comboBoxTo.getSelectedIndex()) {
-                            case 0:
-                                result.setText(usersTemperature.getText());
-                                break;
-                            case 1:
-                                result.setText(String.valueOf(convertCelsiusToFahrenheit(number)));
-                                break;
-                            case 2:
-                                result.setText(String.valueOf(convertCelsiusToKelvin(number)));
-                                break;
-                        }
-                    case 1:
-                        switch (comboBoxTo.getSelectedIndex()) {
-                            case 0:
-                                result.setText(String.valueOf(convertFahrenheitToCelsius(number)));
-                                break;
-                            case 1:
-                                result.setText(usersTemperature.getText());
-                                break;
-                            case 2:
-                                result.setText(String.valueOf(convertFahrenheitToKelvin(number)));
-                                break;
-                        }
-                    case 2:
-                        switch (comboBoxTo.getSelectedIndex()) {
-                            case 0:
-                                result.setText(String.valueOf(convertKelvinToCelsius(number)));
-                                break;
-                            case 1:
-                                result.setText(String.valueOf(convertKelvinToFahrenheit(number)));
-                                break;
-                            case 2:
-                                result.setText(usersTemperature.getText());
-                                break;
-                        }
+                double number = Double.parseDouble(text);
+                int from = comboBoxFrom.getSelectedIndex();
+                int to = comboBoxTo.getSelectedIndex();
+                DecimalFormat df = new DecimalFormat("#.##");
+                if (from == 0) {
+                    if (to == 0) {
+                        result.setText(usersTemperature.getText());
+                    } else if (to == 1) {
+                        result.setText(String.valueOf(df.format(convertCelsiusToFahrenheit(number))));
+                    } else {
+                        result.setText(String.valueOf(df.format(convertCelsiusToKelvin(number))));
+                    }
+                } else if (from == 1) {
+                    if (to == 0) {
+                        result.setText(String.valueOf(df.format(convertFahrenheitToCelsius(number))));
+                    } else if (to == 1) {
+                        result.setText(usersTemperature.getText());
+                    } else {
+                        result.setText(String.valueOf(df.format(convertFahrenheitToKelvin(number))));
+                    }
+                } else {
+                    if (to == 0) {
+                        result.setText(String.valueOf(df.format(convertKelvinToCelsius(number))));
+                    } else if (to == 1) {
+                        result.setText(String.valueOf(df.format(convertKelvinToFahrenheit(number))));
+                    } else {
+                        result.setText(usersTemperature.getText());
+                    }
                 }
             });
         });
     }
 }
-
-
-/* frame.add(new JLabel("Введите температуру по Цельсию: "));
-            JTextField celsius = new JTextField("0", 7);
-            frame.add(celsius);
-            frame.add(new JLabel("Перевести в: "));
-
-            JButton convertToFahrenheit = new JButton("Фаренгейты");
-            frame.add(convertToFahrenheit);
-
-            JButton convertToKelvin = new JButton("Кельвины");
-            frame.add(convertToKelvin);
-
-            JLabel result = new JLabel("Результат: ");
-            frame.add(result);
-
-            convertToFahrenheit.addActionListener((ActionEvent e) -> {
-                String text = celsius.getText();
-                int number = Integer.parseInt(text);
-                result.setText("Результат: " + convertCelsiusToFahrenheit(number) + "°F");
-            });
-
-            convertToKelvin.addActionListener((ActionEvent e) -> {
-                String text = celsius.getText();
-                int number = Integer.parseInt(text);
-                result.setText("Результат: " + convertCelsiusToKelvin(number) + "°K");
-            });
-        });*/
