@@ -47,9 +47,7 @@ public class SinglyLinkedList<T> {
             throw new IndexOutOfBoundsException("Элемента с таким индексом не существует!");
         }
         if (index == 0) {
-            T temp = head.getData();
-            removeHead();
-            return temp;
+            return removeHead();
         }
         ListItem<T> prev = findItem(index - 1);
         T temp = prev.getNext().getData();
@@ -84,15 +82,14 @@ public class SinglyLinkedList<T> {
     }
 
     public void addAtStart(T data) {
-        if (count == 0) {
-            head = new ListItem<>(data, null);
-        } else {
-            head = new ListItem<>(data, head);
-        }
+        head = new ListItem<>(data, head);
         count++;
     }
 
     public boolean removeByData(T data) {
+        if (count == 0) {
+            throw new NullPointerException("Список пуст!");
+        }
         ListItem<T> p = head;
         if (Objects.equals(p.getData(), data)) {
             removeHead();

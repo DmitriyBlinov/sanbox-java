@@ -49,7 +49,7 @@ public class HashTable<T> implements Collection<T> {
 
     @Override
     public Iterator<T> iterator() {
-        return new Iterator<>() {
+        return new Iterator<T>() {
             private int currentIndex = 0;
             private int currentInnerIndex = 0;
 
