@@ -5,6 +5,7 @@ import java.util.*;
 //геттер и сеттер для элементов? Сделать итератор
 public class HashTable<T> implements Collection<T> {
     private ArrayList<T>[] hashTable;
+    private int modCount = 0;
 
     public HashTable() {
         hashTable = new ArrayList[]{};
@@ -21,6 +22,7 @@ public class HashTable<T> implements Collection<T> {
             hashTable[index] = new ArrayList<>();
         }
         hashTable[index].add(value);
+        modCount++;
         return true;
     }
 
@@ -49,25 +51,47 @@ public class HashTable<T> implements Collection<T> {
 
     @Override
     public Iterator<T> iterator() {
-        return new Iterator<T>() {
+        return new Iterator<>() {
             private int currentIndex = 0;
             private int currentInnerIndex = 0;
+            int currentModCount = modCount;
 
             @Override
             public boolean hasNext() {
-                return currentIndex < hashTable.length
-                        && hashTable[currentIndex].size() < currentInnerIndex
-                        && hashTable[currentIndex].get(currentInnerIndex) != null;
+                return (currentIndex++ < hashTable.length) || (currentInnerIndex++ < hashTable[currentIndex].size());
+                //&& hashTable[currentIndex].get(currentInnerIndex++) != null;
             }
 
             @Override
             public T next() {
-                return hashTable[currentIndex].get(currentInnerIndex++);
+                if (!hasNext()) {
+                    throw new NoSuchElementException();
+                }
+                if (currentModCount > modCount) {
+                    throw new ConcurrentModificationException();
+                }
+                //если есть где брать next() в текущем ArrayList
+                if (currentInnerIndex++ < hashTable[currentIndex].size()) {
+                    return hashTable[currentIndex].get(currentInnerIndex++);
+                }
+                //если дошел до конца ArrayList, обнуляет внутр.индекс
+                currentInnerIndex = 0;
+                return hashTable[currentIndex++].get(currentInnerIndex);
             }
 
             @Override
             public void remove() {
-                throw new UnsupportedOperationException();
+                if (currentIndex > hashTable.length) {
+                    throw new NoSuchElementException();
+                }
+                hashTable[currentIndex].remove(currentInnerIndex);
+                //после удаления проверяет перевести ли curIndex дальше по ArrayList...
+                if (currentInnerIndex++ < hashTable[currentIndex].size()) {
+                    currentInnerIndex++;
+                //или по hashTable
+                } else if (hasNext()) {
+                    currentIndex++;
+                }
             }
         };
     }
@@ -88,6 +112,7 @@ public class HashTable<T> implements Collection<T> {
         for (ArrayList<T> e : hashTable) {
             isDeleted = e.remove(o);
         }
+        modCount++;
         return isDeleted;
     }
 
@@ -107,6 +132,7 @@ public class HashTable<T> implements Collection<T> {
         for (ArrayList<T> e : hashTable) {
             isDeleted = e.removeAll(c);
         }
+        modCount++;
         return isDeleted;
     }
 
@@ -116,6 +142,7 @@ public class HashTable<T> implements Collection<T> {
         for (ArrayList<T> e : hashTable) {
             isRetained = e.retainAll(c);
         }
+        modCount++;
         return isRetained;
     }
 
@@ -124,6 +151,7 @@ public class HashTable<T> implements Collection<T> {
         for (ArrayList<T> e : hashTable) {
             e.clear();
         }
+        modCount++;
     }
 
     @Override
