@@ -3,6 +3,7 @@ package ru.academits.blinov.checkhashtable;
 import ru.academits.blinov.hashtable.HashTable;
 
 import java.util.Arrays;
+import java.util.Iterator;
 
 public class CheckHashTable {
     public static void main(String[] args) {
@@ -17,5 +18,10 @@ public class CheckHashTable {
         hashTable.add(21);
 
         System.out.println(hashTable.toString());
+
+        for (Iterator<Integer> i = hashTable.iterator(); i.hasNext();) {
+            int box = i.next();
+            System.out.println(box);
+        }
     }
 }

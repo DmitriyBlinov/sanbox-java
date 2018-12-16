@@ -2,7 +2,6 @@ package ru.academits.blinov.hashtable;
 
 import java.util.*;
 
-//геттер и сеттер для элементов? Сделать итератор
 public class HashTable<T> implements Collection<T> {
     private ArrayList<T>[] hashTable;
     private int modCount = 0;
@@ -13,6 +12,19 @@ public class HashTable<T> implements Collection<T> {
 
     public HashTable(int size) {
         hashTable = new ArrayList[size];
+    }
+
+    @Override
+    public int size() {
+        if (hashTable.length == 0) {
+            return 0;
+        }
+        return hashTable.length;
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return size() == 0;
     }
 
     @Override
@@ -27,22 +39,21 @@ public class HashTable<T> implements Collection<T> {
     }
 
     @Override
-    public int size() {
-        if (hashTable.length == 0) {
-            return 0;
+    public boolean addAll(Collection<? extends T> collection) {
+        for (T e : collection) {
+            this.add(e);
         }
-        return hashTable.length;
+        modCount++;
+        return true;
     }
 
     @Override
-    public boolean isEmpty() {
-        return hashTable.length == 0;
-    }
-
-    @Override
-    public boolean contains(Object o) {
+    public boolean contains(Object object) {
+        if (this.isEmpty()) {
+            return false;
+        }
         for (ArrayList<T> e : hashTable) {
-            if (e.contains(o)) {
+            if (e.contains(object)) {
                 return true;
             }
         }
@@ -50,16 +61,115 @@ public class HashTable<T> implements Collection<T> {
     }
 
     @Override
+    public boolean containsAll(Collection<?> collection) {
+        if (collection.isEmpty() || this.isEmpty()) {
+            return false;
+        }
+        for (Object e : collection) {
+            int count = 0;
+            for (ArrayList<T> i : hashTable) {
+                if (i.contains(e)) {
+                    count++;
+                }
+            }
+            if (count == 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public Object[] toArray() {
+        return Arrays.copyOf(hashTable, size());
+    }
+
+    @Override
+    public <T> T[] toArray(T[] array) {
+        return array;
+    }
+
+    @Override
+    public boolean remove(Object object) {
+        if (this.isEmpty()) {
+            return false;
+        }
+        boolean isDeleted = false;
+        for (ArrayList<T> e : hashTable) {
+            if (e.remove(object)) {
+                isDeleted = true;
+                modCount++;
+            }
+        }
+        return isDeleted;
+    }
+
+    @Override
+    public boolean removeAll(Collection<?> collection) {
+        if (collection.isEmpty() || this.isEmpty()) {
+            return false;
+        }
+        boolean isDeleted = false;
+        for (ArrayList<T> e : hashTable) {
+            if (e.removeAll(collection)) {
+                isDeleted = true;
+                modCount++;
+            }
+        }
+        return isDeleted;
+    }
+
+    @Override
+    public void clear() {
+        if (this.isEmpty()) {
+            return;
+        }
+        for (ArrayList<T> e : hashTable) {
+            e.clear();
+        }
+        modCount++;
+    }
+
+    @Override
+    public boolean retainAll(Collection<?> collection) {
+        if (collection.isEmpty() || this.isEmpty()) {
+            return false;
+        }
+        boolean isRetained = false;
+        for (ArrayList<T> e : hashTable) {
+            if (e.retainAll(collection)) {
+                isRetained = true;
+                modCount++;
+            }
+        }
+        return isRetained;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        if (hashTable.length == 0) {
+            return stringBuilder.append("[ ]").toString();
+        }
+        stringBuilder.append("[");
+        for (ArrayList<T> e : hashTable) {
+            stringBuilder.append(e).append(", ");
+        }
+        stringBuilder.delete(stringBuilder.length() - 2, stringBuilder.length()).append("]");
+
+        return stringBuilder.toString();
+    }
+
+    @Override
     public Iterator<T> iterator() {
-        return new Iterator<>() {
+        return new Iterator<T>() {
             private int currentIndex = 0;
             private int currentInnerIndex = 0;
             int currentModCount = modCount;
 
             @Override
             public boolean hasNext() {
-                return (currentIndex++ < hashTable.length) || (currentInnerIndex++ < hashTable[currentIndex].size());
-                //&& hashTable[currentIndex].get(currentInnerIndex++) != null;
+                return (currentIndex++ < hashTable.length) && (currentInnerIndex++ < hashTable[currentIndex].size());
             }
 
             @Override
@@ -67,7 +177,7 @@ public class HashTable<T> implements Collection<T> {
                 if (!hasNext()) {
                     throw new NoSuchElementException();
                 }
-                if (currentModCount > modCount) {
+                if (modCount != currentModCount) {
                     throw new ConcurrentModificationException();
                 }
                 //если есть где брать next() в текущем ArrayList
@@ -88,84 +198,11 @@ public class HashTable<T> implements Collection<T> {
                 //после удаления проверяет перевести ли curIndex дальше по ArrayList...
                 if (currentInnerIndex++ < hashTable[currentIndex].size()) {
                     currentInnerIndex++;
-                //или по hashTable
+                    //или по hashTable
                 } else if (hasNext()) {
                     currentIndex++;
                 }
             }
         };
-    }
-
-    @Override
-    public Object[] toArray() {
-        return Arrays.copyOf(hashTable, size());
-    }
-
-    @Override
-    public <T> T[] toArray(T[] array) {
-        return array;
-    }
-
-    @Override
-    public boolean remove(Object o) {
-        boolean isDeleted = false;
-        for (ArrayList<T> e : hashTable) {
-            isDeleted = e.remove(o);
-        }
-        modCount++;
-        return isDeleted;
-    }
-
-    @Override
-    public boolean containsAll(Collection<?> c) {
-        return false;
-    }
-
-    @Override
-    public boolean addAll(Collection<? extends T> c) {
-        return false;
-    }
-
-    @Override
-    public boolean removeAll(Collection<?> c) {
-        boolean isDeleted = false;
-        for (ArrayList<T> e : hashTable) {
-            isDeleted = e.removeAll(c);
-        }
-        modCount++;
-        return isDeleted;
-    }
-
-    @Override
-    public boolean retainAll(Collection<?> c) {
-        boolean isRetained = false;
-        for (ArrayList<T> e : hashTable) {
-            isRetained = e.retainAll(c);
-        }
-        modCount++;
-        return isRetained;
-    }
-
-    @Override
-    public void clear() {
-        for (ArrayList<T> e : hashTable) {
-            e.clear();
-        }
-        modCount++;
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder stringBuilder = new StringBuilder();
-        if (hashTable.length == 0) {
-            return stringBuilder.append("[ ]").toString();
-        }
-        stringBuilder.append("[");
-        for (ArrayList<T> e : hashTable) {
-            stringBuilder.append(e).append(", ");
-        }
-        stringBuilder.delete(stringBuilder.length() - 2, stringBuilder.length()).append("]");
-
-        return stringBuilder.toString();
     }
 }
