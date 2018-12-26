@@ -1,4 +1,4 @@
-package ru.academits.blinov.lambda;
+package ru.academits.blinov.lambda.person;
 
 public class Person {
     private String name;
