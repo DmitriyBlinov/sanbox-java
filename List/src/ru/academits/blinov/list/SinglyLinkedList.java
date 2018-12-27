@@ -88,7 +88,7 @@ public class SinglyLinkedList<T> {
 
     public boolean removeByData(T data) {
         if (count == 0) {
-            throw new NullPointerException("Список пуст!");
+            return false;
         }
         ListItem<T> p = head;
         if (Objects.equals(p.getData(), data)) {
