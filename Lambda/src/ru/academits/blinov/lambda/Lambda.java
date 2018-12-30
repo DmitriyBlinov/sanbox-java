@@ -1,14 +1,9 @@
 package ru.academits.blinov.lambda;
 
-import ru.academits.blinov.lambda.person.Person;
-import ru.academits.blinov.lambda.comparators.AgeComparator;
+import ru.academits.blinov.person.Person;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class Lambda {
     public static void main(String[] args) {
@@ -21,30 +16,26 @@ public class Lambda {
         Person john3 = new Person("John", 21);
         List<Person> persons = Arrays.asList(john, jack, phil, chris, daisy, john2, john3);
 
-        Stream<Person> stream = persons.stream().distinct();
-        List<Person> filteredPersons = stream.collect(Collectors.toList());
-        String allFilteredNames = filteredPersons.stream()
-                .map(Person::getName)
+        List<String> filteredPersons = persons.stream().map(Person::getName).distinct().collect(Collectors.toList());
+        String filteredNames = filteredPersons.stream()
                 .collect(Collectors.joining(", "));
-        System.out.println("Имена: " + allFilteredNames);
+        System.out.println("Имена: " + filteredNames);
 
-        Stream<Person> stream2 = persons.stream().filter(p -> p.getAge() < 18);
-        double averageYoungAge = stream2
+        double averageYoungAge = persons.stream().filter(p -> p.getAge() < 18)
                 .mapToDouble(Person::getAge)
                 .average()
                 .orElse(0);
         System.out.println("Средний возраст несовершеннолетних: " + averageYoungAge);
 
-        Map<String, Double> personsMap = filteredPersons.stream()
+        Map<String, Double> personsMap = persons.stream()
                 .collect(Collectors.groupingBy(Person::getName,
                         Collectors.averagingInt(Person::getAge)));
         System.out.println("Map: " + personsMap.toString());
 
         List<Person> personsFilteredByAge = persons.stream()
                 .filter(p -> (p.getAge() >= 20) && (p.getAge() <= 45))
-                .sorted(new AgeComparator())
+                .sorted((p1, p2) -> p2.getAge() - p1.getAge())
                 .collect(Collectors.toList());
-        Collections.reverse(personsFilteredByAge);
         personsFilteredByAge.forEach(System.out::println);
     }
 }

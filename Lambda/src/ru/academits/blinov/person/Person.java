@@ -1,10 +1,10 @@
-package ru.academits.blinov.lambda.person;
+package ru.academits.blinov.person;
 
 public class Person {
     private String name;
     private int age;
 
-    public Person (String name, int age) {
+    public Person(String name, int age) {
         this.name = name;
         this.age = age;
     }
@@ -17,7 +17,7 @@ public class Person {
         return name;
     }
 
-    public String toString(){
+    public String toString() {
         return getName() + "," + getAge();
     }
 
