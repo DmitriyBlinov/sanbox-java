@@ -49,10 +49,13 @@ public class HashTable<T> implements Collection<T> {
 
     @Override
     public boolean contains(Object object) {
-        if (this.isEmpty()) {
+        if (hashTable.length == 0) {
             return false;
         }
         for (ArrayList<T> e : hashTable) {
+            if (e == null) {
+                continue;
+            }
             if (e.contains(object)) {
                 return true;
             }
@@ -62,7 +65,7 @@ public class HashTable<T> implements Collection<T> {
 
     @Override
     public boolean containsAll(Collection<?> collection) {
-        if (collection.isEmpty() || this.isEmpty()) {
+        if (collection.isEmpty() || hashTable.length == 0) {
             return false;
         }
         for (Object e : collection) {
@@ -91,48 +94,75 @@ public class HashTable<T> implements Collection<T> {
 
     @Override
     public boolean remove(Object object) {
-        if (this.isEmpty()) {
+        if (hashTable.length == 0) {
             return false;
         }
         boolean isDeleted = false;
+        int count = 0;
         for (ArrayList<T> e : hashTable) {
+            if (e == null) {
+                count++;
+                continue;
+            }
             if (e.remove(object)) {
                 isDeleted = true;
                 modCount++;
+                if (e.isEmpty()) {
+                    hashTable[count] = null;
+                }
             }
+            count++;
         }
         return isDeleted;
     }
 
     @Override
     public boolean removeAll(Collection<?> collection) {
-        if (collection.isEmpty() || this.isEmpty()) {
+        if (collection.isEmpty() || hashTable.length == 0) {
             return false;
         }
         boolean isDeleted = false;
+        int count = 0;
         for (ArrayList<T> e : hashTable) {
+            if (e == null) {
+                count++;
+                continue;
+            }
             if (e.removeAll(collection)) {
                 isDeleted = true;
                 modCount++;
+                if (e.isEmpty()) {
+                    hashTable[count] = null;
+                }
             }
+            count++;
         }
         return isDeleted;
     }
 
     @Override
     public void clear() {
-        if (this.isEmpty()) {
+        if (hashTable.length == 0) {
             return;
         }
+        int count = 0;
         for (ArrayList<T> e : hashTable) {
+            if (e == null) {
+                count++;
+                continue;
+            }
             e.clear();
+            if (e.isEmpty()) {
+                hashTable[count] = null;
+            }
+            count++;
         }
         modCount++;
     }
 
     @Override
     public boolean retainAll(Collection<?> collection) {
-        if (collection.isEmpty() || this.isEmpty()) {
+        if (collection.isEmpty() || hashTable.length == 0) {
             return false;
         }
         boolean isRetained = false;
@@ -140,6 +170,9 @@ public class HashTable<T> implements Collection<T> {
             if (e.retainAll(collection)) {
                 isRetained = true;
                 modCount++;
+            }
+            if (e.isEmpty()) {
+                e.add(null);
             }
         }
         return isRetained;
@@ -160,49 +193,41 @@ public class HashTable<T> implements Collection<T> {
         return stringBuilder.toString();
     }
 
-    @Override
+    private class HashTableIterator implements Iterator<T> {
+        private int currentIndex = 0;
+        private int currentInnerIndex = -1;
+        int currentModCount = modCount;
+
+        @Override
+        public boolean hasNext() {
+            return (currentIndex + 1 < hashTable.length);
+        }
+
+        @Override
+        public T next() {
+            if (currentIndex >= hashTable.length) {
+                throw new NoSuchElementException();
+            }
+            if (modCount != currentModCount) {
+                throw new ConcurrentModificationException();
+            }
+            if (hashTable[currentIndex] == null) {
+                currentIndex++;
+                return null;
+            }
+            if (currentInnerIndex + 1 < hashTable[currentIndex].size()) {
+                return hashTable[currentIndex].get(++currentInnerIndex);
+            }
+            currentInnerIndex = -1;
+            if (hashTable[currentIndex + 1] == null) {
+                currentIndex += 2;
+                return null;
+            }
+            return hashTable[++currentIndex].get(++currentInnerIndex);
+        }
+    }
+
     public Iterator<T> iterator() {
-        return new Iterator<T>() {
-            private int currentIndex = 0;
-            private int currentInnerIndex = 0;
-            int currentModCount = modCount;
-
-            @Override
-            public boolean hasNext() {
-                return (currentIndex++ < hashTable.length) && (currentInnerIndex++ < hashTable[currentIndex].size());
-            }
-
-            @Override
-            public T next() {
-                if (!hasNext()) {
-                    throw new NoSuchElementException();
-                }
-                if (modCount != currentModCount) {
-                    throw new ConcurrentModificationException();
-                }
-                //если есть где брать next() в текущем ArrayList
-                if (currentInnerIndex++ < hashTable[currentIndex].size()) {
-                    return hashTable[currentIndex].get(currentInnerIndex++);
-                }
-                //если дошел до конца ArrayList, обнуляет внутр.индекс
-                currentInnerIndex = 0;
-                return hashTable[currentIndex++].get(currentInnerIndex);
-            }
-
-            @Override
-            public void remove() {
-                if (currentIndex > hashTable.length) {
-                    throw new NoSuchElementException();
-                }
-                hashTable[currentIndex].remove(currentInnerIndex);
-                //после удаления проверяет перевести ли curIndex дальше по ArrayList...
-                if (currentInnerIndex++ < hashTable[currentIndex].size()) {
-                    currentInnerIndex++;
-                    //или по hashTable
-                } else if (hasNext()) {
-                    currentIndex++;
-                }
-            }
-        };
+        return new HashTableIterator();
     }
 }
