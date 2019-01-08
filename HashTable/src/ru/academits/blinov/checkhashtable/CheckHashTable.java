@@ -9,7 +9,7 @@ import java.util.List;
 
 public class CheckHashTable {
     public static void main(String[] args) {
-        HashTable<Integer> hashTable = new HashTable<>(15);
+        HashTable<Integer> hashTable = new HashTable<>(14);
         hashTable.add(2);
         hashTable.add(12);
         hashTable.add(55);
@@ -17,10 +17,13 @@ public class CheckHashTable {
         hashTable.add(1);
         hashTable.add(99);
         hashTable.add(21);
+        hashTable.add(225);
+        hashTable.add(3);
 
         System.out.println("Изначальная таблица: " + hashTable.toString());
 
-        hashTable.remove(55);
+        System.out.println(hashTable.contains(99));
+        System.out.println("***Удаление " + hashTable.remove(null));
         System.out.println("Удаление элемента: " + hashTable.toString());
 
         Iterator<Integer> iterator = hashTable.iterator();
@@ -29,11 +32,13 @@ public class CheckHashTable {
         }
         System.out.println();
 
-        List<Integer> collection = new ArrayList<>();
+        List<Integer> collection = new ArrayList<>(5);
         collection.add(2);
         collection.add(12);
-        collection.add(55);
+        collection.add(99);
+        System.out.println(hashTable.containsAll(collection));
         hashTable.removeAll(collection);
+        hashTable.addAll(collection);
         System.out.println("Удаление элементов другой коллекции: " + hashTable.toString());
     }
 }
