@@ -117,7 +117,7 @@ public class HashTable<E> implements Collection<E> {
         //true if this collection changed as a result of the call
         boolean isDeleted = false;
         for (Object e : collection) {
-            if (remove(e)) {
+            if (this.remove(e)) {
                 isDeleted = true;
             }
         }
@@ -141,19 +141,18 @@ public class HashTable<E> implements Collection<E> {
     @Override
     public boolean retainAll(Collection<?> collection) {
         //TODO
-        if (collection.isEmpty() || isEmpty()) {
-            return false;
-        }
         boolean isRetained = false;
-        for (int i = 0; i < hashTable.length; i++) {
-            if (hashTable[i] == null) {
+        for (ArrayList<E> e : hashTable) {
+            if (e == null) {
                 continue;
             }
-            if (hashTable[i].retainAll(collection)) {
+            int tempSize = e.size();
+            if (e.retainAll(collection)) {
                 isRetained = true;
-                entries--;
+                entries -= (tempSize - e.size());
                 modCount++;
             }
+
         }
         return isRetained;
     }
@@ -185,7 +184,7 @@ public class HashTable<E> implements Collection<E> {
 
         @Override
         public E next() {
-            if (index > hashTable.length) {
+            if (!hasNext()) {
                 throw new NoSuchElementException();
             }
             if (modCount != currentModCount) {

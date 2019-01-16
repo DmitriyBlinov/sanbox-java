@@ -33,12 +33,16 @@ public class CheckHashTable {
         System.out.println();
 
         List<Integer> collection = new ArrayList<>(5);
+        ArrayList<Integer> temp = new ArrayList<>(3);
+        temp.add(null);
+        temp.retainAll(hashTable);
+        System.out.println(temp);
         collection.add(2);
-        collection.add(12);
+        collection.add(0);
         collection.add(99);
         System.out.println(hashTable.containsAll(collection));
-        hashTable.removeAll(collection);
-        hashTable.addAll(collection);
+        //System.out.println("RemoveAll: " + hashTable.removeAll(collection));
+        System.out.println("Retain: " + hashTable.retainAll(collection));
         System.out.println("Удаление элементов другой коллекции: " + hashTable.toString());
     }
 }
