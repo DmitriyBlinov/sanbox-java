@@ -38,10 +38,6 @@ public class HashTable<E> implements Collection<E> {
 
     @Override
     public boolean addAll(Collection<? extends E> collection) {
-        //TODO
-        //true if this collection changed as a result of the call
-        //здесь возвращает true, если коллекция в которую добавляли, была изменена
-        //значит даже если 1 раз добавили, то по логике будет true
         boolean isAdded = false;
         for (E e : collection) {
             if (add(e)) {
@@ -57,7 +53,7 @@ public class HashTable<E> implements Collection<E> {
     public boolean contains(Object object) {
         int index = Math.abs(Objects.hashCode(object) % hashTable.length);
         if (hashTable[index] == null) {
-            return false;
+            return Objects.equals(object, hashTable[index]);
         }
         return hashTable[index].contains(object);
     }
@@ -75,21 +71,21 @@ public class HashTable<E> implements Collection<E> {
     @Override
     public Object[] toArray() {
         Object[] array = new Object[size()];
-        //TODO итератором по всей хеш-таблице
-        List<ArrayList<E>> tempHashTable = new ArrayList<>(Arrays.asList(hashTable));
-        tempHashTable.removeAll(Collections.singleton(null));
-        return tempHashTable.toArray();
+        Iterator<E> iterator = iterator();
+        for (int i = 0; i < size(); i++) {
+            array[i] = iterator.next();
+        }
+        return array;
     }
 
     @Override
     public <T> T[] toArray(T[] array) {
-        //TODO
         if (array.length < size()) {
             //noinspection unchecked
-            return (T[]) Arrays.copyOf(toArray(), size(), array.getClass());
+            return (T[]) Arrays.copyOf(this.toArray(), size(), array.getClass());
         }
         //noinspection SuspiciousSystemArraycopy
-        System.arraycopy(toArray(), 0, array, 0, array.length);
+        System.arraycopy(this.toArray(), 0, array, 0, array.length);
         if (array.length > size()) {
             array[size()] = null;
             return array;
@@ -113,8 +109,6 @@ public class HashTable<E> implements Collection<E> {
 
     @Override
     public boolean removeAll(Collection<?> collection) {
-        //TODO
-        //true if this collection changed as a result of the call
         boolean isDeleted = false;
         for (Object e : collection) {
             if (this.remove(e)) {
@@ -129,9 +123,12 @@ public class HashTable<E> implements Collection<E> {
         if (isEmpty()) {
             return;
         }
-        for (int i = 0; i < size(); i++) {
-            if (!hashTable[i].isEmpty()) {
-                hashTable[i].clear();
+        for (ArrayList<E> e : hashTable) {
+            if (e == null) {
+                continue;
+            }
+            if (!e.isEmpty()) {
+                e.clear();
                 modCount++;
             }
         }
@@ -140,7 +137,6 @@ public class HashTable<E> implements Collection<E> {
 
     @Override
     public boolean retainAll(Collection<?> collection) {
-        //TODO
         boolean isRetained = false;
         for (ArrayList<E> e : hashTable) {
             if (e == null) {
@@ -152,7 +148,6 @@ public class HashTable<E> implements Collection<E> {
                 entries -= (tempSize - e.size());
                 modCount++;
             }
-
         }
         return isRetained;
     }
@@ -175,11 +170,12 @@ public class HashTable<E> implements Collection<E> {
     private class HashTableIterator implements Iterator<E> {
         private int index = 0;
         private int innerIndex = -1;
+        private int entriesCount = 0;
         private int currentModCount = modCount;
 
         @Override
         public boolean hasNext() {
-            return (index + 1 < hashTable.length);
+            return (entriesCount < size());
         }
 
         @Override
@@ -190,20 +186,19 @@ public class HashTable<E> implements Collection<E> {
             if (modCount != currentModCount) {
                 throw new ConcurrentModificationException();
             }
-            if (hashTable[index] != null) {
-                if (innerIndex + 1 < hashTable[index].size()) {
-                    innerIndex++;
-                    return hashTable[index].get(innerIndex);
+            for (; hasNext(); index++) {
+                if (hashTable[index] == null) {
+                    continue;
                 }
-                innerIndex = -1;
-                index++;
-                if (hashTable[index] != null) {
-                    innerIndex++;
-                    return hashTable[index].get(innerIndex);
+                if (innerIndex + 1 >= hashTable[index].size()) {
+                    innerIndex = -1;
+                } else {
+                    break;
                 }
             }
-            index++;
-            return null;
+            entriesCount++;
+            innerIndex++;
+            return hashTable[index].get(innerIndex);
         }
     }
 

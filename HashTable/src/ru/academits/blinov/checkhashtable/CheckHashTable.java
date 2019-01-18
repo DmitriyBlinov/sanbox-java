@@ -21,10 +21,9 @@ public class CheckHashTable {
         hashTable.add(3);
 
         System.out.println("Изначальная таблица: " + hashTable.toString());
-
-        System.out.println(hashTable.contains(99));
-        System.out.println("***Удаление " + hashTable.remove(null));
-        System.out.println("Удаление элемента: " + hashTable.toString());
+        System.out.println("Contains: " + hashTable.contains(99));
+        System.out.println("Удаление элемента: " + hashTable.remove(3) + ", " + hashTable.toString());
+        System.out.println("ToArray: " + Arrays.toString(hashTable.toArray()));
 
         Iterator<Integer> iterator = hashTable.iterator();
         while (iterator.hasNext()) {
@@ -33,16 +32,10 @@ public class CheckHashTable {
         System.out.println();
 
         List<Integer> collection = new ArrayList<>(5);
-        ArrayList<Integer> temp = new ArrayList<>(3);
-        temp.add(null);
-        temp.retainAll(hashTable);
-        System.out.println(temp);
         collection.add(2);
-        collection.add(0);
+        collection.add(1);
         collection.add(99);
-        System.out.println(hashTable.containsAll(collection));
-        //System.out.println("RemoveAll: " + hashTable.removeAll(collection));
-        System.out.println("Retain: " + hashTable.retainAll(collection));
-        System.out.println("Удаление элементов другой коллекции: " + hashTable.toString());
+        System.out.println("ContainsAll: " + hashTable.containsAll(collection));
+        System.out.println("Удаление элементов другой коллекции: " + hashTable.removeAll(collection) + ", " + hashTable.toString());
     }
 }
