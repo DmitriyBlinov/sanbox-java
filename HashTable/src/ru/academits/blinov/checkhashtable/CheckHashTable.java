@@ -16,9 +16,6 @@ public class CheckHashTable {
         hashTable.add(6);
         hashTable.add(1);
         hashTable.add(99);
-        hashTable.add(21);
-        hashTable.add(225);
-        hashTable.add(3);
 
         System.out.println("Изначальная таблица: " + hashTable.toString());
         System.out.println("Contains: " + hashTable.contains(99));

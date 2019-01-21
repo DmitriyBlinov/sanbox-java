@@ -24,7 +24,7 @@ public class HashTable<E> implements Collection<E> {
 
     @Override
     public boolean add(E value) {
-        int index = Math.abs(Objects.hashCode(value) % hashTable.length);
+        int index = findIndex(value);
         if (hashTable[index] == null) {
             hashTable[index] = new ArrayList<>();
         }
@@ -41,8 +41,6 @@ public class HashTable<E> implements Collection<E> {
         boolean isAdded = false;
         for (E e : collection) {
             if (add(e)) {
-                entries++;
-                modCount++;
                 isAdded = true;
             }
         }
@@ -51,9 +49,9 @@ public class HashTable<E> implements Collection<E> {
 
     @Override
     public boolean contains(Object object) {
-        int index = Math.abs(Objects.hashCode(object) % hashTable.length);
+        int index = findIndex(object);
         if (hashTable[index] == null) {
-            return Objects.equals(object, hashTable[index]);
+            return false;
         }
         return hashTable[index].contains(object);
     }
@@ -95,7 +93,7 @@ public class HashTable<E> implements Collection<E> {
 
     @Override
     public boolean remove(Object object) {
-        int index = Math.abs(Objects.hashCode(object) % hashTable.length);
+        int index = findIndex(object);
         if (hashTable[index] == null) {
             return false;
         }
@@ -111,7 +109,7 @@ public class HashTable<E> implements Collection<E> {
     public boolean removeAll(Collection<?> collection) {
         boolean isDeleted = false;
         for (Object e : collection) {
-            if (this.remove(e)) {
+            while (this.remove(e)) {
                 isDeleted = true;
             }
         }
@@ -129,9 +127,9 @@ public class HashTable<E> implements Collection<E> {
             }
             if (!e.isEmpty()) {
                 e.clear();
-                modCount++;
             }
         }
+        modCount++;
         entries = 0;
     }
 
@@ -146,8 +144,10 @@ public class HashTable<E> implements Collection<E> {
             if (e.retainAll(collection)) {
                 isRetained = true;
                 entries -= (tempSize - e.size());
-                modCount++;
             }
+        }
+        if (isRetained) {
+            modCount++;
         }
         return isRetained;
     }
@@ -204,5 +204,9 @@ public class HashTable<E> implements Collection<E> {
 
     public Iterator<E> iterator() {
         return new HashTableIterator();
+    }
+
+    private int findIndex(Object object) {
+        return Math.abs(Objects.hashCode(object) % hashTable.length);
     }
 }
