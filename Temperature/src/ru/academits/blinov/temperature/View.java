@@ -24,6 +24,7 @@ public class View {
         resultTemperature = new JTextField("0", 5);
         resultTemperature.setEditable(false);
         String[] scales = {"°C", "°F", "°K"};
+
         from = new JComboBox<>(scales);
         to = new JComboBox<>(scales);
         convert = new JButton("КОНВЕРТИРОВАТЬ");

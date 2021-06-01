@@ -2,17 +2,17 @@ package ru.academits.blinov.hashtable;
 
 import java.util.*;
 
-public class HashTable<E> implements Collection<E> {
+public class HashTableHome<E> implements Collection<E> {
     private ArrayList<E>[] hashTable;
     private int modCount = 0;
     private int entries = 0;
 
-    public HashTable() {
+    public HashTableHome() {
         //noinspection unchecked
-        hashTable = new ArrayList[]{};
+        hashTable = new ArrayList[]{null};
     }
 
-    public HashTable(int size) {
+    public HashTableHome(int size) {
         //noinspection unchecked
         hashTable = new ArrayList[size];
     }
@@ -28,12 +28,12 @@ public class HashTable<E> implements Collection<E> {
     }
 
     @Override
-    public boolean add(E value) {
+    public boolean add(Object value) {
         int index = Math.abs(value.hashCode() % hashTable.length);
         if (hashTable[index] == null) {
             hashTable[index] = new ArrayList<>();
         }
-        if (hashTable[index].add(value)) {
+        if (hashTable[index].add((E) value)) {
             modCount++;
             entries++;
             return true;
@@ -97,6 +97,10 @@ public class HashTable<E> implements Collection<E> {
 
     @Override
     public Object[] toArray() {
+        Object[] array = new Object[size()];
+        /*for (int i = 0; i < array.length; i++) {
+            array[i] =
+        }*/
         List<ArrayList<E>> tempHashTable = new ArrayList<>(Arrays.asList(hashTable));
         tempHashTable.removeAll(Collections.singleton(null));
         return tempHashTable.toArray();
@@ -123,23 +127,19 @@ public class HashTable<E> implements Collection<E> {
             return false;
         }
         if (object == null) {
-            for (int i = 0; i < hashTable.length; i++) {
-                if (Objects.equals(hashTable[i], null)) {
-                    List<ArrayList<E>> currentHashTable = new ArrayList<>(Arrays.asList(hashTable));
-                    currentHashTable.remove(i);
-                    HashTable<E> tempHashTable = new HashTable<>(currentHashTable.size());
-                    for (ArrayList<E> e : currentHashTable) {
-                        if (e != null) {
-                            tempHashTable.addAll(e);
-                        }
-                    }
-                    hashTable = tempHashTable.hashTable;
-                    modCount++;
-                    entries--;
-                    return true;
+            List<ArrayList<E>> currentHashTable = new ArrayList<>(Arrays.asList(hashTable));
+            currentHashTable.removeAll(Collections.singleton(null));
+            HashTableHome<E> tempHashTableHome = new HashTableHome<>(currentHashTable.size());
+            for (ArrayList<E> e : currentHashTable) {
+                if (e != null) {
+                    tempHashTableHome.addAll(e);
                 }
             }
-            return false;
+            hashTable = tempHashTableHome.hashTable;
+            modCount++;
+            entries--;
+            return true;
+
         }
         int index = Math.abs(object.hashCode() % hashTable.length);
         if (hashTable[index] == null) {
@@ -240,12 +240,28 @@ public class HashTable<E> implements Collection<E> {
 
         @Override
         public E next() {
-            if (currentIndex > hashTable.length) {
+            if (!hasNext()) {
                 throw new NoSuchElementException();
             }
             if (modCount != currentModCount) {
                 throw new ConcurrentModificationException();
             }
+            for (int i = currentIndex; i < size() - 1; i++) {
+                if (hashTable[i] == null) {
+                    currentIndex++;
+                    continue;
+                }
+                if (!hasNext()) {
+                    break;
+                }
+                if (currentInnerIndex + 1 < hashTable[currentIndex].size() - 1) {
+                    currentInnerIndex++;
+                    return hashTable[currentIndex].get(currentInnerIndex);
+                }
+                //currentInnerIndex = 0;
+                //return hashTable[i].get(currentInnerIndex);
+            }
+
             if (hashTable[currentIndex] == null) {
                 currentIndex++;
                 return null;
@@ -255,12 +271,14 @@ public class HashTable<E> implements Collection<E> {
                 return hashTable[currentIndex].get(currentInnerIndex);
             }
             currentInnerIndex = -1;
-            if (hashTable[currentIndex + 1] == null) {
-                currentIndex += 2;
-                return null;
+            if (currentIndex + 1 < hashTable.length) {
+                currentIndex++;
+                if (hashTable[currentIndex] == null) {
+                    currentIndex++;
+                    return null;
+                }
             }
             currentInnerIndex++;
-            currentIndex++;
             return hashTable[currentIndex].get(currentInnerIndex);
         }
     }

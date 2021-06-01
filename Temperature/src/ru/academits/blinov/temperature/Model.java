@@ -10,59 +10,30 @@ public class Model {
     }
 
     //по идее функция может принимать флаг комбобокса и число, дальше просто лямбдой возвращать, видимо
-    private static double convertCelsiusToFahrenheit(double temperatureCelsius) {
-        return temperatureCelsius * 1.8 + 32;
-    }
-
-    private static double convertFahrenheitToCelsius(double temperatureFahrenheit) {
-        return (temperatureFahrenheit - 32) / 1.8;
-    }
-
-    private static double convertCelsiusToKelvin(double temperatureCelsius) {
-        return temperatureCelsius + 273.15;
-    }
-
-    private static double convertKelvinToCelsius(double temperatureKelvin) {
-        return temperatureKelvin - 273.15;
-    }
-
-    private static double convertKelvinToFahrenheit(double temperatureKelvin) {
-        return temperatureKelvin * 1.8 - 459.67;
-    }
-
-    private static double convertFahrenheitToKelvin(double temperatureFahrenheit) {
-        return (temperatureFahrenheit + 459.67) / 1.8;
-    }
+    //сделать интерфейс, в кот-ом обозначены все функции и каждый метод, чтобы он умел конвертить из себя
+    //и дальше. проще всего, чтобы принимал флаг
+    //сделать convertToCelsius и дальше просто пусть смотрит флаг что именно нужно конвертнуть в цельсий
+    //либо может просто конвертировать каждую в цельсий, а из неё уже в нужную
+    //интерфейс должен принять температуру, конвертнуть её в цельсий и затем выдать нужную
 
     public void calculateResult() {
         view.getConvert().addActionListener((ActionEvent e) -> {
             int from = view.getFrom().getSelectedIndex();
             int to = view.getTo().getSelectedIndex();
             double number = view.getUsersTemperature();
-            if (from == 0) {
-                if (to == 0) {
-                    view.setResultTemperature(number);
-                } else if (to == 1) {
-                    view.setResultTemperature(convertCelsiusToFahrenheit(number));
-                } else {
-                    view.setResultTemperature(convertCelsiusToKelvin(number));
-                }
-            } else if (from == 1) {
-                if (to == 0) {
-                    view.setResultTemperature(convertFahrenheitToCelsius(number));
-                } else if (to == 1) {
-                    view.setResultTemperature(number);
-                } else {
-                    view.setResultTemperature(convertFahrenheitToKelvin(number));
-                }
-            } else {
-                if (to == 0) {
-                    view.setResultTemperature(convertKelvinToCelsius(number));
-                } else if (to == 1) {
-                    view.setResultTemperature(convertKelvinToFahrenheit(number));
-                } else {
-                    view.setResultTemperature(number);
-                }
+
+            //по идее, здесь должна быть одна строчка типа view.setResultTemperature(Scales.convert(from, to));
+// 1. celsius должен любую температуру из from переводить в себя 2. celsius должен уметь из любой температуры сделать to
+            switch(from){
+                default:
+                    view.setResultTemperature(Scales.convertCelsius(to, number));
+                    break;
+                case 1:
+                    view.setResultTemperature(Scales.convertFahrenheit(to, number));
+                    break;
+                case 2:
+                    view.setResultTemperature(Scales.convertKelvin(to, number));
+                    break;
             }
         });
     }
