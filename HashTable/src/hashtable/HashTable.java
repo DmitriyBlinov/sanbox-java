@@ -126,17 +126,17 @@ public class HashTable<K, V> {
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
         if (isEmpty()) {
-            return stringBuilder.append("{ }").toString();
+            return stringBuilder.append("[ ]").toString();
         }
-        stringBuilder.append("{");
+        stringBuilder.append("[");
         for (HashNode<K,V> e : hashTable) {
             if (Objects.equals(e, null)) {
                 stringBuilder.append(e).append(", ");
             } else {
-                stringBuilder.append(e.getKey()).append("=").append(e.getValue()).append(", ");
+                stringBuilder.append(e.getKey()).append("->").append(e.getValue()).append(", ");
             }
         }
-        stringBuilder.delete(stringBuilder.length() - 2, stringBuilder.length()).append("}");
+        stringBuilder.delete(stringBuilder.length() - 2, stringBuilder.length()).append("]");
 
         return stringBuilder.toString();
     }
