@@ -4,17 +4,17 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class HashTable<K, V> {
-    private ArrayList<HashNode<K, V>> bucketArray;
+    private ArrayList<HashNode<K, V>> hashTable;
     private int entries;
     private int size;
 
     public HashTable() {
-        bucketArray = new ArrayList<>();
+        hashTable = new ArrayList<>();
         entries = 10;
         size = 0;
 
         for (int i = 0; i < entries; i++) {
-            bucketArray.add(null);
+            hashTable.add(null);
         }
     }
 
@@ -30,7 +30,7 @@ public class HashTable<K, V> {
         return Objects.hashCode(key);
     }
 
-    private int getBucketIndex(Object key) {
+    private int getEntryIndex(Object key) {
         int hashCode = hashCode(key);
         int index = hashCode % entries;
 
@@ -39,9 +39,9 @@ public class HashTable<K, V> {
     }
 
     public V remove(Object key) {
-        int bucketIndex = getBucketIndex(key);
+        int bucketIndex = getEntryIndex(key);
         int hashCode = hashCode(key);
-        HashNode<K, V> head = bucketArray.get(bucketIndex);
+        HashNode<K, V> head = hashTable.get(bucketIndex);
 
         HashNode<K, V> prev = null;
         while (head != null) {
@@ -61,16 +61,16 @@ public class HashTable<K, V> {
         if (prev != null) {
             prev.next = head.next;
         } else {
-            bucketArray.set(bucketIndex, head.next);
+            hashTable.set(bucketIndex, head.next);
         }
         return head.getValue();
     }
 
     public V get(Object key) {
-        int bucketIndex = getBucketIndex(key);
+        int bucketIndex = getEntryIndex(key);
         int hashCode = hashCode(key);
 
-        HashNode<K, V> head = bucketArray.get(bucketIndex);
+        HashNode<K, V> head = hashTable.get(bucketIndex);
 
         while (head != null) {
             if (head.getKey().equals(key) && head.hashCode == hashCode) {
@@ -83,9 +83,9 @@ public class HashTable<K, V> {
 
 
     public void add(K key, V value) {
-        int bucketIndex = getBucketIndex(key);
+        int bucketIndex = getEntryIndex(key);
         int hashCode = hashCode(key);
-        HashNode<K, V> head = bucketArray.get(bucketIndex);
+        HashNode<K, V> head = hashTable.get(bucketIndex);
 
         while (head != null) {
             if (head.getKey().equals(key) && head.hashCode == hashCode) {
@@ -96,10 +96,10 @@ public class HashTable<K, V> {
         }
 
         size++;
-        head = bucketArray.get(bucketIndex);
+        head = hashTable.get(bucketIndex);
         HashNode<K, V> newNode = new HashNode<>(key, value, hashCode);
         newNode.next = head;
-        bucketArray.set(bucketIndex, newNode);
+        hashTable.set(bucketIndex, newNode);
 
         if ((1.0 * size) / entries >= 0.7) {
             extendSize();
@@ -107,12 +107,12 @@ public class HashTable<K, V> {
     }
 
     private void extendSize() {
-        ArrayList<HashNode<K, V>> temp = bucketArray;
-        bucketArray = new ArrayList<>();
+        ArrayList<HashNode<K, V>> temp = hashTable;
+        hashTable = new ArrayList<>();
         entries = 2 * entries;
         size = 0;
         for (int i = 0; i < entries; i++) {
-            bucketArray.add(null);
+            hashTable.add(null);
         }
 
         for (HashNode<K, V> headNode : temp) {
@@ -129,7 +129,7 @@ public class HashTable<K, V> {
             return stringBuilder.append("{ }").toString();
         }
         stringBuilder.append("{");
-        for (HashNode<K,V> e : bucketArray) {
+        for (HashNode<K,V> e : hashTable) {
             if (Objects.equals(e, null)) {
                 stringBuilder.append(e).append(", ");
             } else {

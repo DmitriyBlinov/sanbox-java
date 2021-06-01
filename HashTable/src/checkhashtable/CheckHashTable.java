@@ -9,6 +9,7 @@ public class CheckHashTable {
         hashTable.add(1, "This");
         hashTable.add(2, "is");
         hashTable.add(3, "HashTable");
+        hashTable.add(4, "!");
 
         System.out.println("Initial size: " + hashTable.size());
         System.out.println("Removed value: " + hashTable.remove(2));
