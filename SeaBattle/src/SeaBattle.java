@@ -33,7 +33,8 @@ class Game {
 
             boolean isSuitable = true;
             for (int i = 0; i < size; i++) {
-                int currentX = x + 1;
+                //TODO currentX = x + 1;
+                int currentX = i + 1;
                 if (i >= FIELD_SIZE) {
                     isSuitable = false;
                     break;
@@ -43,7 +44,7 @@ class Game {
                     isSuitable = false;
                     break;
                 }
-                //слева пуста
+                //слева пусто
                 if (y > 0 && field[currentX][y - 1] != EMPTY) {
                     isSuitable = false;
                     break;

@@ -11,9 +11,9 @@ public class CheckHashTable {
         hashTable.add(3, "HashTable");
         hashTable.add(4, "!");
 
-        System.out.println("Initial size: " + hashTable.size());
+        System.out.println("Initial size: " + hashTable.getSize());
         System.out.println("Removed value: " + hashTable.remove(2));
-        System.out.println("Size: " + hashTable.size());
+        System.out.println("Size: " + hashTable.getSize());
         System.out.println("Is empty: " + hashTable.isEmpty());
         System.out.println(hashTable);
     }

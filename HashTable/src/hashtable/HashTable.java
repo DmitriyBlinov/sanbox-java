@@ -5,43 +5,44 @@ import java.util.Objects;
 
 public class HashTable<K, V> {
     private ArrayList<HashNode<K, V>> hashTable;
-    private int entries;
+    private int nodeCount;
     private int size;
 
     public HashTable() {
         hashTable = new ArrayList<>();
-        entries = 10;
+        nodeCount = 10;
         size = 0;
 
-        for (int i = 0; i < entries; i++) {
+        for (int i = 0; i < nodeCount; i++) {
             hashTable.add(null);
         }
     }
 
-    public int size() {
+    public int getSize() {
         return size;
     }
 
     public boolean isEmpty() {
-        return size() == 0;
+        return getSize() == 0;
     }
 
-    private int hashCode(Object key) {
+    //TODO change to manual calculation?
+    private int hashCode(K key) {
         return Objects.hashCode(key);
     }
 
-    private int getEntryIndex(Object key) {
+    private int getNodeIndex(K key) {
         int hashCode = hashCode(key);
-        int index = hashCode % entries;
+        int index = hashCode % nodeCount;
 
         index = index < 0 ? index * -1 : index;
         return index;
     }
 
-    public V remove(Object key) {
-        int bucketIndex = getEntryIndex(key);
+    public V remove(K key) {
+        int nodeIndex = getNodeIndex(key);
         int hashCode = hashCode(key);
-        HashNode<K, V> head = hashTable.get(bucketIndex);
+        HashNode<K, V> head = hashTable.get(nodeIndex);
 
         HashNode<K, V> prev = null;
         while (head != null) {
@@ -61,16 +62,16 @@ public class HashTable<K, V> {
         if (prev != null) {
             prev.next = head.next;
         } else {
-            hashTable.set(bucketIndex, head.next);
+            hashTable.set(nodeIndex, head.next);
         }
         return head.getValue();
     }
 
-    public V get(Object key) {
-        int bucketIndex = getEntryIndex(key);
+    public V get(K key) {
+        int nodeIndex = getNodeIndex(key);
         int hashCode = hashCode(key);
 
-        HashNode<K, V> head = hashTable.get(bucketIndex);
+        HashNode<K, V> head = hashTable.get(nodeIndex);
 
         while (head != null) {
             if (head.getKey().equals(key) && head.hashCode == hashCode) {
@@ -83,9 +84,9 @@ public class HashTable<K, V> {
 
 
     public void add(K key, V value) {
-        int bucketIndex = getEntryIndex(key);
+        int nodeIndex = getNodeIndex(key);
         int hashCode = hashCode(key);
-        HashNode<K, V> head = hashTable.get(bucketIndex);
+        HashNode<K, V> head = hashTable.get(nodeIndex);
 
         while (head != null) {
             if (head.getKey().equals(key) && head.hashCode == hashCode) {
@@ -96,22 +97,27 @@ public class HashTable<K, V> {
         }
 
         size++;
-        head = hashTable.get(bucketIndex);
+
+        head = hashTable.get(nodeIndex);
         HashNode<K, V> newNode = new HashNode<>(key, value, hashCode);
         newNode.next = head;
-        hashTable.set(bucketIndex, newNode);
+        hashTable.set(nodeIndex, newNode);
 
-        if ((1.0 * size) / entries >= 0.7) {
-            extendSize();
+        if (checkLoadFactor()) {
+            rehash();
         }
     }
 
-    private void extendSize() {
+    private boolean checkLoadFactor() {
+        return (1.0 * size) / nodeCount >= 0.7;
+    }
+
+    private void rehash() {
         ArrayList<HashNode<K, V>> temp = hashTable;
         hashTable = new ArrayList<>();
-        entries = 2 * entries;
+        nodeCount = 2 * nodeCount;
         size = 0;
-        for (int i = 0; i < entries; i++) {
+        for (int i = 0; i < nodeCount; i++) {
             hashTable.add(null);
         }
 
