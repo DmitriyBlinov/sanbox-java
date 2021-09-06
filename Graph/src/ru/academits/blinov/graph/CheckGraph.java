@@ -17,7 +17,7 @@ public class CheckGraph<T> {
         graph.addEdge(0, 4, 1); //AE
         graph.addEdge(4, 5, 1); //EF
 
-        graph.depthFirstSearch(0);
+        //graph.depthFirstSearch(0);
         graph.breadthFirstSearch(0);
     }
 }
