@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="945a4e7d-ac6f-4e6d-a753-c0ccf01a6b9b" name="Default" comment="Search initialization changes">
-      <change afterPath="$PROJECT_DIR$/Collection/Collection.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Collection/src/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+    <list default="true" id="945a4e7d-ac6f-4e6d-a753-c0ccf01a6b9b" name="Default" comment="Added producer-consumer">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProducerConsumer/src/ru/academits/blinov/Consumer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProducerConsumer/src/ru/academits/blinov/Main.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProducerConsumer/src/ru/academits/blinov/Producer.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -93,6 +94,9 @@
     <option name="height" value="1047" />
   </component>
   <component name="ProjectId" id="1sxtNEpWWjHSYPo26V0poBPt2DP" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
@@ -139,10 +143,11 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="TODO_SCOPE" value="All Places" />
     <property name="jdk.selected.JAVA_MODULE" value="1.8" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/ProducerConsumer" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../ProducerConsumer" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -152,7 +157,7 @@
       <recent name="C:\Users\Дмитрий\IdeaProjects\AcademIt\HashKeyValue" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.CheckGraph">
+  <component name="RunManager" selected="Application.Main (1)">
     <configuration name="CheckGraph" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="ru.academits.blinov.graph.CheckGraph" />
       <module name="Graph" />
@@ -160,20 +165,6 @@
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="ru.academits.blinov.graph.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="CheckHashTable (1)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="checkhashtable.CheckHashTable" />
-      <module name="HashTable" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="checkhashtable.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -191,6 +182,14 @@
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Main (1)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Main" />
+      <module name="ProducerConsumer" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -236,17 +235,17 @@
     <list>
       <item itemvalue="Application.CheckHashTable" />
       <item itemvalue="Application.SeaBattle" />
-      <item itemvalue="Application.CheckHashTable (1)" />
       <item itemvalue="Application.CheckGraph" />
       <item itemvalue="Application.Main" />
+      <item itemvalue="Application.Main (1)" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.Main (1)" />
         <item itemvalue="Application.CheckGraph" />
         <item itemvalue="Application.Main" />
         <item itemvalue="Application.CheckHashTable" />
         <item itemvalue="Application.SeaBattle" />
-        <item itemvalue="Application.CheckHashTable (1)" />
       </list>
     </recent_temporary>
   </component>
@@ -507,7 +506,14 @@
       <option name="project" value="LOCAL" />
       <updated>1630935765951</updated>
     </task>
-    <option name="localTasksCounter" value="36" />
+    <task id="LOCAL-00036" summary="Added producer-consumer">
+      <created>1657101428160</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1657101428160</updated>
+    </task>
+    <option name="localTasksCounter" value="37" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -548,6 +554,7 @@
     </layout>
   </component>
   <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="Первый коммит" />
     <MESSAGE value="Merge branch 'master' of https://github.com/DmitriyBlinov/AcademIt&#10;&#10;# Conflicts:&#10;#&#9;Range/src/ru/academits/blinov/range/Range.java&#10;#&#9;Range/src/ru/academits/blinov/range/RangeCheckNumber.java" />
     <MESSAGE value="Новая версия Vector" />
@@ -570,7 +577,8 @@
     <MESSAGE value="Added new HashTable" />
     <MESSAGE value="Graph refactored" />
     <MESSAGE value="Search initialization changes" />
-    <option name="LAST_COMMIT_MESSAGE" value="Search initialization changes" />
+    <MESSAGE value="Added producer-consumer" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added producer-consumer" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
